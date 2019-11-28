@@ -83,15 +83,16 @@ public  class SocketThread extends Thread{
 		boolean start=false;
 		to_client.println("connection");
 		
-		//to_client.println("enter your username");
+		to_client.println("enter your username");
 		userName= from_client.readLine();
 		while(!start){
 			
 		to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing avaible rooms");
-		String response =from_client.readLine();
-		String name="";
+		String answer =from_client.readLine();
 		
-		switch (response) {
+		String name="";
+	
+		switch (answer) {
 		case "c":
 			
 			to_client.println("enter a name for the room ");
@@ -122,6 +123,7 @@ public  class SocketThread extends Thread{
 			break;
 		
 		default:
+			System.out.println("error");
 			break;
 		}}
 		

@@ -4,6 +4,8 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +20,9 @@ public class ChatWindow {
 	private JTextField textField;
 	private JButton btnSubmit;
 	private JTextArea textArea = new JTextArea();
+	private Buffer buffer = new Buffer();
+	
+	private Client_Socket clientOwner;
 	/**
 	 * Launch the application.
 	 */
@@ -88,9 +93,26 @@ public class ChatWindow {
 		pane.add(textField, gbc_textField);
 		
 		textField.setColumns(10);
-		
+		btnSubmit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				buffer.add(textField.getText());
+				textField.setText(" ");
+			
+			}
+		});
 		
 		frame.setVisible(true);
+	}
+	
+	public WindowPrinter getPrinter() {
+		return (String message)-> {textArea.append(message+"\n"); };
+		
+	}; 
+	
+	public Buffer getBuffer() {
+		return buffer;
 	}
 
 }

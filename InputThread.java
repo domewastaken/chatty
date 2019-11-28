@@ -8,10 +8,12 @@ import java.io.IOException;
 public class InputThread extends Thread {
 	private BufferedReader c		;
 	private boolean 	   test=true;
+	private WindowPrinter  printer;
+	public InputThread(BufferedReader from_client) {this(from_client,null);}
 	
-	public InputThread(BufferedReader from_client){
+	public InputThread(BufferedReader from_client, WindowPrinter printer){
 		this.c=from_client;
-		
+		this.printer=printer;
 	}
 	
 	@Override
@@ -23,7 +25,7 @@ public class InputThread extends Thread {
 	try {
 		if((text = c.readLine())!=null)
 		text =text.replaceAll("_", " ");
-		System.out.println(text);
+		printer.println(text);
 	
 	} catch (IOException e) { e.printStackTrace(); }	
 	
