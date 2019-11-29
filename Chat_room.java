@@ -47,7 +47,7 @@ public void textMessage(String msg, String username) {
 	
 	for (int i= 0; i<users.length;i++)
 	{	
-		if(users[i]!=null && users[i].getUsername()!=username)
+		if(users[i]!=null /*&& users[i].getUsername()!=username*/)
 		users[i].sendMessage("["+username+"]: "+msg);
 	}
 }
@@ -70,7 +70,14 @@ public static Chat_room getRoomByName(String c) {
 			return d[i];}
 	
 	}
-		return null;
+	
+	
+	return null;
+}
+
+public static void deleteRoom() {
+	
+	
 }
 
 public int maxUsers(){

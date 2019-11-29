@@ -6,14 +6,14 @@ import java.io.IOException;
 
 
 public class InputThread extends Thread {
-	private BufferedReader c		;
+	private BufferedReader stream		;
 	private boolean 	   test=true;
-	private WindowPrinter  printer;
+	private WindowPrinter  output;
 	public InputThread(BufferedReader from_client) {this(from_client,null);}
 	
-	public InputThread(BufferedReader from_client, WindowPrinter printer){
-		this.c=from_client;
-		this.printer=printer;
+	public InputThread(BufferedReader from_client, WindowPrinter output){
+		this.stream=from_client;
+		this.output=output;
 	}
 	
 	@Override
@@ -23,11 +23,14 @@ public class InputThread extends Thread {
 	String text = null;
 	
 	try {
-		if((text = c.readLine())!=null)
-		text =text.replaceAll("_", " ");
-		printer.println(text);
+		if((text = stream.readLine())!=null)
+		output.println(text);
 	
-	} catch (IOException e) { e.printStackTrace(); }	
+	} catch (IOException e) {
+		if (e.getMessage().equals("Connection reset")) {
+			output.println("server closed");
+		}
+		}	
 	
 	}}
 	

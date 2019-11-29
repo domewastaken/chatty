@@ -22,7 +22,6 @@ public class ChatWindow {
 	private JTextArea textArea = new JTextArea();
 	private Buffer buffer = new Buffer();
 	
-	private Client_Socket clientOwner;
 	/**
 	 * Launch the application.
 	 */
@@ -97,9 +96,10 @@ public class ChatWindow {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				buffer.add(textField.getText());
-				textField.setText(" ");
-			
+				String g =textField.getText();
+				buffer.add(g);
+				textField.setText("");
+				//DEBUG USE ONLY //System.out.println("writed:"+g);
 			}
 		});
 		

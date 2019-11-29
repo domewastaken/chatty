@@ -15,7 +15,7 @@ public class Buffer {
 	}
 	public void add(String text) {
 		synchronized (internalBuffer) {
-			internalBuffer = internalBuffer.concat(text+"\n");
+			internalBuffer = internalBuffer.concat(text);
 			
 		}
 		

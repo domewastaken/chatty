@@ -9,8 +9,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
-
-
 public  class SocketThread extends Thread{
 	private Multi_Server delete;
 	private Socket socket;
@@ -133,23 +131,22 @@ public  class SocketThread extends Thread{
 			
 				while(this.getTest())
 				{
-					
 					String text = null;
 			
 					try {
 						text = from_client.readLine();
+					
 					} catch (IOException e) {
-						
-						if(e.getMessage()=="Connection reset"){
-						this.close();}
-						else{	
-						e.printStackTrace();}}
+						if(e.getMessage()=="Connection reset"){this.close();}
+						else{e.printStackTrace();}
+						}
 			
 					if(text!=null)
+					//DEBUG USE ONLY //System.out.println("get:"+text);
 					c.textMessage(text,userName);	
 				
 				}
-			}
+				}
 		};
 		
 		tr1.start();
@@ -162,8 +159,6 @@ public  class SocketThread extends Thread{
 		}
 			
 	}
-
-	
 
 	public InetAddress getClientIp(){
 		return socket.getInetAddress();

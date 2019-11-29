@@ -1,20 +1,20 @@
 package servers;
 
 import java.io.PrintStream;
-import java.util.Scanner;
 
 public class OutputThread extends Thread {
 	private String text;
 	private PrintStream c;
 	private boolean test = true;
 	private Buffer userInput;
-	@SuppressWarnings("unused")
-	private String username;
+	//private WindowPrinter p;
+	//private String username;
 	
-	public OutputThread(PrintStream c, Buffer buffer,String username){
+	public OutputThread(PrintStream c, Buffer buffer/*, String username,WindowPrinter p*/){
 		this.c=c;
 		this.userInput=buffer;
-		this.username=username;
+		//this.username=username;
+		//this.p =p;
 	}
 	@Override
 	public void run(){
@@ -29,8 +29,9 @@ public class OutputThread extends Thread {
 		}
 	
 	c.println(text);
-	System.out.println(text);
-	
+	//p.println("["+username+"]: "+text);
+	//DEBUG USE ONLY //System.out.println("sended:"+text);
+
 	}
 	else {
 		try {

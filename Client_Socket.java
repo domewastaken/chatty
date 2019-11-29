@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client_Socket {
 	private Socket socket;
@@ -115,9 +114,9 @@ public class Client_Socket {
 	
 		
 		
-		userOutput.println("\nSTART");
+		userOutput.println("\n CHAT STARTED");
 		InputThread tr1=new InputThread(from_server,userOutput);
-		OutputThread tr2 = new OutputThread(to_server,buffer,username);
+		OutputThread tr2 = new OutputThread(to_server,buffer/*,username,userOutput*/);
 		tr1.start();
 		tr2.start();
 		try {
