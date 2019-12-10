@@ -18,6 +18,7 @@ public class Client_Socket {
 	private boolean stopExecution= false;
 	private int port;
 	private Buffer buffer;
+
 	public static void main(String[] args){
 		
 		new Client_Socket("127.0.0.1", 8080, new ChatWindow());
