@@ -7,17 +7,16 @@ public class Chat_room{
 	
 private String 		   	room_name;
 private	List<SocketThread> 	users;
-
-private static List<Chat_room> 	roomsRegistry = 
-								new ArrayList<Chat_room>();
+private int max;
+private static List<Chat_room> 	roomsRegistry = new ArrayList<>();
 
 //private String[] cronology;
 		
 public Chat_room(String name, int max) {
-
+	this.max=max;
 	this.setName(name);					//assign the name to the room
 	Chat_room.addRoom(this);			//add the current room to the registry
-	this.users = new ArrayList<SocketThread>(max);	//initialize an array for roomsRegistry' components
+	this.users = new ArrayList<>(max);	//initialize a list for roomsRegistry' components
 
 }
 
@@ -30,14 +29,14 @@ public void setName(String room_name) {
 }
 
 public boolean joinRoom(SocketThread c) {
-	return users.add(c);
+	if(this.activeUsers()<max){
+	return users.add(c);}
+	else{return false;}
 }
 
 public void textMessage(String msg, String username) {
 
 	users.forEach( (SocketThread s)-> {s.sendMessage("["+username+"]: "+msg);});
-
-
 }
 
 private static void addRoom(Chat_room c) {
@@ -69,14 +68,9 @@ public void deleteUser(SocketThread s) {
 }
 
 public int maxUsers(){
-	return users.size();
+	return max;
 }
 public int activeUsers(){
-	int num=0;
-	for(SocketThread i : users){
-		if(i!=null)
-		num++;
-	}
-	return num;
+	return users.size();
 }
 }

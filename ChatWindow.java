@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -101,14 +103,23 @@ public class ChatWindow {
 				//DEBUG USE ONLY //System.out.println("writed:"+g);
 			}
 		});
-		
+		textField.addKeyListener(new KeyAdapter() {
+
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+					btnSubmit.doClick();
+				}
+			}
+		});
+
+
 		frame.setVisible(true);
 	}
 	
 	public WindowPrinter getPrinter() {
 		return (String message)-> {textArea.append(message+"\n"); };
 		
-	}; 
+	}
 	
 	public Buffer getBuffer() {
 		return buffer;

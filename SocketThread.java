@@ -15,7 +15,7 @@ public  class SocketThread extends Thread{
 	private Scanner userInput;
 	private PrintStream to_client;
 	private BufferedReader from_client;
-	private Chat_room c ;
+	private Chat_room room ;
 	private String userName;
 	
 	private String toStringFromArray(Chat_room[] c)
@@ -61,19 +61,19 @@ public  class SocketThread extends Thread{
 		else{e1.printStackTrace();}
 		}
 
-	
+
 
 	delete.relase_recource(this);
-	
+	room.deleteUser(this);
 	to_client.close();
 	try {
 		from_client.close();
 	} catch (IOException e) {
-		
+
 		e.printStackTrace();
 	}
 	userInput.close();
-	
+
 	}
 	
 	public void play() throws IOException,SocketException
@@ -95,9 +95,9 @@ public  class SocketThread extends Thread{
 			
 			to_client.println("enter a name for the room ");
 			name=from_client.readLine();
-			c = new Chat_room(name, 5);
+			room = new Chat_room(name, 5);
 			
-			c.joinRoom(this);
+			room.joinRoom(this);
 			to_client.println("start_chat");
 			start=true;
 			break;
@@ -105,8 +105,8 @@ public  class SocketThread extends Thread{
 			
 			to_client.println("enter the name of the room ");
 			name=from_client.readLine();
-			c = Chat_room.getRoomByName(name);
-			c.joinRoom(this);
+			room = Chat_room.getRoomByName(name);
+			room.joinRoom(this);
 			to_client.println("start_chat");
 			start=true;
 			break;
@@ -143,7 +143,7 @@ public  class SocketThread extends Thread{
 			
 					if(text!=null)
 					//DEBUG USE ONLY //System.out.println("get:"+text);
-					c.textMessage(text,userName);	
+					room.textMessage(text,userName);
 				
 				}
 				}
