@@ -24,25 +24,6 @@ public class ChatWindow {
 	private JTextArea textArea = new JTextArea();
 	private Buffer buffer = new Buffer();
 	
-	/**
-	 * Launch the application.
-	 */
-/*	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {s
-					ChatWindow window = new ChatWindow();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-*/
-	/**
-	 * Create the application.
-	 */
 	public ChatWindow() {
 		initialize();
 	}
@@ -112,17 +93,14 @@ public class ChatWindow {
 			}
 		});
 
-
 		frame.setVisible(true);
 	}
 	
 	public WindowPrinter getPrinter() {
-		return (String message)-> {textArea.append(message+"\n"); };
-		
+		return (String message)-> { textArea.append(message+"\n"); };	
 	}
 	
 	public Buffer getBuffer() {
 		return buffer;
 	}
-
 }
