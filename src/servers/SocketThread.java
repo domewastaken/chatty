@@ -9,15 +9,13 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
 
-
-
 public  class SocketThread extends Thread{
 	private Multi_Server delete;
 	private Socket socket;
 	private Scanner userInput;
 	private PrintStream to_client;
 	private BufferedReader from_client;
-	private Chat_room c ;
+	private Chat_room room ;
 	private String userName;
 	
 	private String toStringFromArray(Chat_room[] c)
@@ -63,19 +61,19 @@ public  class SocketThread extends Thread{
 		else{e1.printStackTrace();}
 		}
 
-	
+
 
 	delete.relase_recource(this);
-	
+	room.deleteUser(this);
 	to_client.close();
 	try {
 		from_client.close();
 	} catch (IOException e) {
-		
+
 		e.printStackTrace();
 	}
 	userInput.close();
-	
+
 	}
 	
 	public void play() throws IOException,SocketException
@@ -83,22 +81,23 @@ public  class SocketThread extends Thread{
 		boolean start=false;
 		to_client.println("connection");
 		
-		//to_client.println("enter your username");
+		to_client.println("enter your username");
 		userName= from_client.readLine();
 		while(!start){
 			
 		to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing avaible rooms");
-		String response =from_client.readLine();
-		String name="";
+		String answer =from_client.readLine();
 		
-		switch (response) {
+		String name="";
+	
+		switch (answer) {
 		case "c":
 			
 			to_client.println("enter a name for the room ");
 			name=from_client.readLine();
-			c = new Chat_room(name, 5);
+			room = new Chat_room(name, 5);
 			
-			c.joinRoom(this);
+			room.joinRoom(this);
 			to_client.println("start_chat");
 			start=true;
 			break;
@@ -106,8 +105,8 @@ public  class SocketThread extends Thread{
 			
 			to_client.println("enter the name of the room ");
 			name=from_client.readLine();
-			c = Chat_room.getRoomByName(name);
-			c.joinRoom(this);
+			room = Chat_room.getRoomByName(name);
+			room.joinRoom(this);
 			to_client.println("start_chat");
 			start=true;
 			break;
@@ -122,6 +121,7 @@ public  class SocketThread extends Thread{
 			break;
 		
 		default:
+			System.out.println("error");
 			break;
 		}}
 		
@@ -131,23 +131,22 @@ public  class SocketThread extends Thread{
 			
 				while(this.getTest())
 				{
-					
 					String text = null;
 			
 					try {
 						text = from_client.readLine();
+					
 					} catch (IOException e) {
-						
-						if(e.getMessage()=="Connection reset"){
-						this.close();}
-						else{	
-						e.printStackTrace();}}
+						if(e.getMessage()=="Connection reset"){this.close();}
+						else{e.printStackTrace();}
+						}
 			
 					if(text!=null)
-					c.textMessage(text,userName);	
+					//DEBUG USE ONLY //System.out.println("get:"+text);
+					room.textMessage(text,userName);
 				
 				}
-			}
+				}
 		};
 		
 		tr1.start();
@@ -160,8 +159,6 @@ public  class SocketThread extends Thread{
 		}
 			
 	}
-
-	
 
 	public InetAddress getClientIp(){
 		return socket.getInetAddress();

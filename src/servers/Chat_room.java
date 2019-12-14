@@ -6,18 +6,17 @@ import java.util.List;
 public class Chat_room{
 	
 private String 		   	room_name;
-private	SocketThread[] 	users;
-
-private static List<Chat_room> 	roomsRegistry = 
-								new ArrayList<Chat_room>();
+private	List<SocketThread> 	users;
+private int max;
+private static List<Chat_room> 	roomsRegistry = new ArrayList<>();
 
 //private String[] cronology;
 		
 public Chat_room(String name, int max) {
-
+	this.max=max;
 	this.setName(name);					//assign the name to the room
 	Chat_room.addRoom(this);			//add the current room to the registry
-	this.users = new SocketThread[max];	//initialize an array for roomsRegistry' components
+	this.users = new ArrayList<>(max);	//initialize a list for roomsRegistry' components
 
 }
 
@@ -30,26 +29,14 @@ public void setName(String room_name) {
 }
 
 public boolean joinRoom(SocketThread c) {
-	boolean t = false ;
-	for (int i= 0; i<users.length;i++)
-	{
-		if(users[i]==null)
-		{
-		users[i] = c;
-		t=true;
-		break;
-		}
-	}
-	return t;
+	if(this.activeUsers()<max){
+	return users.add(c);}
+	else{return false;}
 }
 
 public void textMessage(String msg, String username) {
-	
-	for (int i= 0; i<users.length;i++)
-	{	
-		if(users[i]!=null && users[i].getUsername()!=username)
-		users[i].sendMessage("["+username+"]: "+msg);
-	}
+
+	users.forEach( (SocketThread s)-> {s.sendMessage("["+username+"]: "+msg);});
 }
 
 private static void addRoom(Chat_room c) {
@@ -70,18 +57,20 @@ public static Chat_room getRoomByName(String c) {
 			return d[i];}
 	
 	}
-		return null;
+	
+	
+	return null;
+}
+
+public void deleteUser(SocketThread s) {
+	users.remove(s);
+	
 }
 
 public int maxUsers(){
-	return users.length;
+	return max;
 }
 public int activeUsers(){
-	int num=0;
-	for(SocketThread i : users){
-		if(i!=null)
-		num++;
-	}
-	return num;
+	return users.size();
 }
 }

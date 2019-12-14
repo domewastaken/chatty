@@ -6,31 +6,32 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client_Socket {
 	private Socket socket;
-	private Scanner userInput;
+	
+	private WindowPrinter userOutput;
 	private PrintStream to_server;
 	private BufferedReader from_server;
 	private String address;
 	private String username; 	
 	private boolean stopExecution= false;
 	private int port;
-	
+	private Buffer buffer;
 	public static void main(String[] args){
 		
-		new Client_Socket("127.0.0.1", 8080);
+		new Client_Socket("127.0.0.1", 8080, new ChatWindow());
 	}
 	
 	
 	
 	
-	public Client_Socket(String address, int port)  {
+	public Client_Socket(String address, int port, ChatWindow window)  {
+		this.userOutput = window.getPrinter();
 		
 		this.address = address ;
 		this.port = port;
-	
+		this.buffer=window.getBuffer();
 		try {
 			
 			socket = new Socket(InetAddress.getByAddress(new byte[]{ (byte) Integer.parseInt( address.split("\\.")[0]), 
@@ -40,13 +41,13 @@ public class Client_Socket {
 															         } ), port);
 	
 		} catch (IOException e) {
-			System.out.println("errors during the connection");
+			userOutput.println("errors during the connection");
 			stopExecution=true;
 		}
 		if(!stopExecution){
-		System.out.println("connect to "+address);
+		userOutput.println("connect to "+address);
 		
-		userInput = new Scanner(System.in);
+		
 	
 		try {
 			to_server = new PrintStream(socket.getOutputStream());
@@ -61,28 +62,50 @@ public class Client_Socket {
 		try {
 		from_server.close();
 		} catch (IOException e) {e.printStackTrace();}
-		userInput.close();
+		
 		}
 		
 	}
 	
 	
 	private void play() throws IOException {
+		buffer.register(this);
 		boolean test=true;
 		String c = null;
 		
 		c = from_server.readLine();	
-		System.out.println("received "+ c);
-		System.out.println("enter your username");
-		username = userInput.nextLine();
-		to_server.println(username);
+		userOutput.println("received "+ c);
+	
 		while(test){
 			c="";
 			c=from_server.readLine();
 			
 			if(!c.equals("start_chat")){
-				System.out.println(c);
-				to_server.println(userInput.nextLine());
+				
+				userOutput.println(c);
+				while(true) {       
+				
+					if(buffer.isReady()) {
+						
+						
+						to_server.println(buffer.getString().trim());
+						buffer.clearBuffer();
+						break;
+						}
+				
+					else {
+					try {
+						synchronized (this) {
+							wait();
+						}
+						
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+						System.out.println("lollo");
+					}
+					
+				}}
+			
 			}else{
 				test=false;
 			}
@@ -91,9 +114,9 @@ public class Client_Socket {
 	
 		
 		
-		System.out.println("\n");
-		InputThread tr1=new InputThread(from_server);
-		OutputThread tr2 = new OutputThread(to_server, userInput,username);
+		userOutput.println("\n CHAT STARTED");
+		InputThread tr1=new InputThread(from_server,userOutput);
+		OutputThread tr2 = new OutputThread(to_server,buffer/*,username,userOutput*/);
 		tr1.start();
 		tr2.start();
 		try {
@@ -107,7 +130,7 @@ public class Client_Socket {
 			from_server.close();
 		} catch (IOException e) {e.printStackTrace();}
 		
-		userInput.close();
+		
 	}
 
 
