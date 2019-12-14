@@ -8,18 +8,12 @@ public class Buffer {
 	private List<Object> listenerList = new ArrayList<Object>();
 	
 	private  void fire() {
-		
-		listenerList.forEach(  (Object a)->{synchronized (a) {
-			
-		 a.notify();}  } );
+		listenerList.forEach(  (Object a)->{ synchronized(a) {a.notify();} }  );
 	}
 	public void add(String text) {
-		synchronized (internalBuffer) {
-			internalBuffer = internalBuffer.concat(text);
-			
+		synchronized (internalBuffer){
+		internalBuffer = internalBuffer.concat(text);	
 		}
-		
-		
 		fire();
 	}
 	public String getString() {
