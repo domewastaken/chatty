@@ -6,9 +6,10 @@ import java.io.IOException;
 
 
 public class InputThread extends Thread {
-	private BufferedReader stream		;
-	private boolean 	   test=true;
-	private WindowPrinter  output;
+	private BufferedReader stream;
+	private boolean test=true;
+	private WindowPrinter output;
+	
 	public InputThread(BufferedReader from_client) {this(from_client,null);}
 	
 	public InputThread(BufferedReader from_client, WindowPrinter output){
