@@ -14,10 +14,9 @@ private static List<Chat_room> 	roomsRegistry = new ArrayList<>();
 		
 public Chat_room(String name, int max) {
 	this.max=max;
-	this.setName(name);					//assign the name to the room
-	Chat_room.addRoom(this);			//add the current room to the registry
+	this.setName(name);			//assign the name to the room
+	Chat_room.addRoom(this);		//add the current room to the registry
 	this.users = new ArrayList<>(max);	//initialize a list for roomsRegistry' components
-
 }
 
 public String getName() {
@@ -35,7 +34,6 @@ public boolean joinRoom(SocketThread c) {
 }
 
 public void textMessage(String msg, String username) {
-
 	users.forEach( (SocketThread s)-> {s.sendMessage("["+username+"]: "+msg);});
 }
 
@@ -53,18 +51,17 @@ public static Chat_room getRoomByName(String c) {
 	roomsRegistry.toArray(d);
 	
 	for(int i = 0 ;i<roomsRegistry.size();i++){
+		
 		if( d[i].getName().equals(c) ){
-			return d[i];}
-	
+			return d[i];
+		}
 	}
-	
 	
 	return null;
 }
 
 public void deleteUser(SocketThread s) {
 	users.remove(s);
-	
 }
 
 public int maxUsers(){
