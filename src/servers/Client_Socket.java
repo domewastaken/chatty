@@ -20,18 +20,26 @@ public class Client_Socket {
 	private Buffer buffer;
 	public static void main(String[] args){
 		
-		new Client_Socket("127.0.0.1", 8080, new ChatWindow());
+		new Client_Socket( 8080, new ChatWindow());
 	}
 	
 	
 	
 	
-	public Client_Socket(String address, int port, ChatWindow window)  {
+	public Client_Socket( int port, ChatWindow window){
 		this.userOutput = window.getPrinter();
-		
-		this.address = address ;
+		userOutput.println("enter the address");
 		this.port = port;
 		this.buffer=window.getBuffer();
+		buffer.register(this);
+
+		try {
+			synchronized (this){wait();}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		this.address=buffer.getString();
+		buffer.clearBuffer();
 		try {
 			
 			socket = new Socket(InetAddress.getByAddress(new byte[]{ (byte) Integer.parseInt( address.split("\\.")[0]), 
@@ -69,7 +77,7 @@ public class Client_Socket {
 	
 	
 	private void play() throws IOException {
-		buffer.register(this);
+
 		boolean test=true;
 		String c = null;
 		

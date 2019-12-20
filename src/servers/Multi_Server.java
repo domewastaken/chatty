@@ -34,10 +34,12 @@ public class Multi_Server {
 		this.sockets = new ArrayList<SocketThread>();  /**************************/
 		
 		/**************************************************************/
-		try {  server= new ServerSocket(port);  } 
-		
-		catch (IOException e) 
-		{ System.out.println("cannot bind to the specified port"); }
+		try {  server= new ServerSocket(port);  }
+		catch (IOException e)
+        {
+            System.out.println("cannot bind to the specified port");
+            System.out.println(e.getMessage());
+		}
 		/**************************************************************/
 		
 		System.out.println("server bind to port: "+ port);
@@ -45,16 +47,14 @@ public class Multi_Server {
 
 	public void start()
 	{
-		
 		while(run)
 		{
-			
 			if (connections_alives < maxServers){
 				
 				/**************************************************************/
 				try {
 					
-					SocketThread c =new SocketThread(server.accept(),this);     		//it passes also the current instance
+					SocketThread c =new SocketThread(server.accept(),this);     	//it passes also the current instance
 					c.start();															//for make possible to delete the connection 
 					sockets.add(c);			//add the current connection to the list	//with @method relase_resource
 				    System.out.println("connected to "+c.getStringClientIp());
