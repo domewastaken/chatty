@@ -83,6 +83,7 @@ public  class SocketThread extends Thread{
 		
 		to_client.println("enter your username");
 		userName= from_client.readLine();
+
 		while(!start){
 			
 		to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing avaible rooms");
@@ -98,7 +99,7 @@ public  class SocketThread extends Thread{
 			room = new Chat_room(name, 5);
 			
 			room.joinRoom(this);
-			to_client.println("start_chat");
+			to_client.println("start_asynchronous");
 			start=true;
 			break;
 		case "j":
@@ -106,8 +107,17 @@ public  class SocketThread extends Thread{
 			to_client.println("enter the name of the room ");
 			name=from_client.readLine();
 			room = Chat_room.getRoomByName(name);
-			room.joinRoom(this);
-			to_client.println("start_chat");
+			if (room == null){
+				to_client.println(""+name+" room doesn't exist. Enter for continue");
+				from_client.readLine();
+				break;
+			}
+			if (!room.joinRoom(this)){
+				to_client.println(""+name+" room is full. Enter for continue");
+				from_client.readLine();
+				break;
+			}
+			to_client.println("start_asynchronous");
 			start=true;
 			break;
 		

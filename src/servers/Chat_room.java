@@ -5,9 +5,10 @@ import java.util.List;
 
 public class Chat_room{
 	
-private String 		   	room_name;
+private String 		   		room_name;
 private	List<SocketThread> 	users;
-private int max;
+private int 				max;
+
 private static List<Chat_room> 	roomsRegistry = new ArrayList<>();
 
 //private String[] cronology;
@@ -27,12 +28,20 @@ public void setName(String room_name) {
 	this.room_name = room_name;
 }
 
-public boolean joinRoom(SocketThread c) {
+public synchronized boolean joinRoom(SocketThread c) {
 	if(this.activeUsers()<max){
-	return users.add(c);}
-	else{return false;}
-}
+		serverMessage(""+c.getUsername()+" joined the chat") ;
+		users.add(c);
 
+		return true;
+	}else{
+		return false;
+	}
+}
+private void serverMessage(String text){
+	users.forEach( (SocketThread s)-> { s.sendMessage(text); });
+
+}
 public void textMessage(String msg, String username) {
 	users.forEach( (SocketThread s)-> {s.sendMessage("["+username+"]: "+msg);});
 }
@@ -49,7 +58,6 @@ public static ArrayList<Chat_room> getAvaibleRooms() {
 public static Chat_room getRoomByName(String c) {
 	Chat_room[] d = new Chat_room[roomsRegistry.size()];
 	roomsRegistry.toArray(d);
-	
 	for(int i = 0 ;i<roomsRegistry.size();i++){
 		
 		if( d[i].getName().equals(c) ){
@@ -62,6 +70,7 @@ public static Chat_room getRoomByName(String c) {
 
 public void deleteUser(SocketThread s) {
 	users.remove(s);
+	serverMessage(""+s.getUsername()+" left the chat");
 }
 
 public int maxUsers(){

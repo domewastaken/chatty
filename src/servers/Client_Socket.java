@@ -88,7 +88,7 @@ public class Client_Socket {
 			c="";
 			c=from_server.readLine();
 			
-			if(!c.equals("start_chat")){
+			if(!c.equals("start_asynchronous")){
 				
 				userOutput.println(c);
 				while(true) {       
@@ -122,7 +122,7 @@ public class Client_Socket {
 	
 		
 		
-		userOutput.println("\n CHAT STARTED");
+		userOutput.println("\nCHAT STARTED");
 		InputThread tr1=new InputThread(from_server,userOutput);
 		OutputThread tr2 = new OutputThread(to_server,buffer/*,username,userOutput*/);
 		tr1.start();
