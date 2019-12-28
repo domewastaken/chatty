@@ -53,7 +53,7 @@ public class Client_Socket {
 			stopExecution=true;
 		}
 		if(!stopExecution){
-		userOutput.println("connect to "+address);
+		userOutput.println("connecting to "+address);
 		
 		
 	
@@ -94,8 +94,7 @@ public class Client_Socket {
 				while(true) {       
 				
 					if(buffer.isReady()) {
-						
-						
+
 						to_server.println(buffer.getString().trim());
 						buffer.clearBuffer();
 						break;

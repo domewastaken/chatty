@@ -10,10 +10,12 @@ public class InputThread extends Thread {
 	private boolean test=true;
 	private WindowPrinter output;
 	
-	public InputThread(BufferedReader from_client) {this(from_client,null);}
+	public InputThread(BufferedReader from)
+	{ this(from, System.out::println); }
+
 	
-	public InputThread(BufferedReader from_client, WindowPrinter output){
-		this.stream=from_client;
+	public InputThread(BufferedReader from, WindowPrinter output){
+		this.stream=from;
 		this.output=output;
 	}
 	
@@ -28,7 +30,9 @@ public class InputThread extends Thread {
 		output.println(text);
 	
 	} catch (IOException e) {
-		if (e.getMessage().equals("Connection reset")) {
+		if (e.getMessage().equals("Connection reset"))
+		{
+			close();
 			output.println("server closed");
 		}
 		}	
@@ -37,6 +41,11 @@ public class InputThread extends Thread {
 	
 	public void close(){
 		test=false;
+		try {
+		stream.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	protected boolean getTest(){
 		return test;

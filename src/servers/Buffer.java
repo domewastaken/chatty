@@ -17,6 +17,7 @@ public class Buffer {
 		}
 		fire();
 	}
+
 	public String getString() {
 		return internalBuffer;
 	}

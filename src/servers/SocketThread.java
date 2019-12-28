@@ -21,17 +21,19 @@ public  class SocketThread extends Thread{
 	private String toStringFromArray(Chat_room[] c)
 	{
 		String i ="";
-	    for(Chat_room b : c)
-	    {
-	    	i=i.concat(b.getName() + "[" +b.activeUsers()+ "/" +b.maxUsers()+ "]" +", ");
-	    
-	    }
-		return i;
-		
+	    if(!(c.length ==0)) {
+			for (Chat_room b : c) {
+				i = i.concat(b.getName() + "[" + b.activeUsers() + "/" + b.maxUsers() + "]" + ", ");
+
+			}
+		}else{
+	    	i = "no room available";
+		}
+			return i;
+
 	}
 	public SocketThread(Socket s , Multi_Server m) 
 	{
-	
 	this.delete = m ;
 	this.socket = s;
 	
@@ -44,24 +46,18 @@ public  class SocketThread extends Thread{
 	
 	}
 
-	
 	public void sendMessage(String msg){
 		to_client.println(msg);
 	}
-	
-	
-	
+
+
 	@Override
 	public final void run() {
-	try {
-		play();
-	} 
+	try { play(); }
 	catch (IOException e1) {
-		if(e1.getMessage()=="Connection reset"){}
-		else{e1.printStackTrace();}
-		}
-
-
+		if( !(e1.getMessage()=="Connection reset") )
+		{ e1.printStackTrace(); }
+	}
 
 	delete.relase_recource(this);
 	room.deleteUser(this);
@@ -69,15 +65,13 @@ public  class SocketThread extends Thread{
 	try {
 		from_client.close();
 	} catch (IOException e) {
-
 		e.printStackTrace();
 	}
 	userInput.close();
 
 	}
 	
-	public void play() throws IOException,SocketException
-	{
+	public void play() throws IOException {
 		boolean start=false;
 		to_client.println("connection");
 		
@@ -123,8 +117,8 @@ public  class SocketThread extends Thread{
 		
 		case "s":
 			
-			Chat_room[] d =new Chat_room[Chat_room.getAvaibleRooms().toArray().length];
-			Chat_room.getAvaibleRooms().toArray(d);
+			Chat_room[] d =new Chat_room[Chat_room.getAvailableRooms().toArray().length];
+			Chat_room.getAvailableRooms().toArray(d);
 			String tmp =toStringFromArray(d);
 			to_client.println(tmp+" click enter for continue");
 			from_client.readLine();
@@ -134,23 +128,20 @@ public  class SocketThread extends Thread{
 			System.out.println("error");
 			break;
 		}}
-		
+
 		InputThread tr1=new InputThread(from_client){
 			@Override
 			public void run(){
-			
-				while(this.getTest())
-				{
-					String text = null;
-			
-					try {
-						text = from_client.readLine();
-					
-					} catch (IOException e) {
-						if(e.getMessage()=="Connection reset"){this.close();}
-						else{e.printStackTrace();}
-						}
-			
+			while(this.getTest())
+			{
+				String text = null;
+
+				try {
+					text = from_client.readLine();
+				} catch (IOException e) {
+					if(e.getMessage()=="Connection reset"){this.close();}
+					else{e.printStackTrace();}
+				}
 					if(text!=null)
 					//DEBUG USE ONLY //System.out.println("get:"+text);
 					room.textMessage(text,userName);

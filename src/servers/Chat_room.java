@@ -39,18 +39,18 @@ public synchronized boolean joinRoom(SocketThread c) {
 	}
 }
 private void serverMessage(String text){
-	users.forEach( (SocketThread s)-> { s.sendMessage(text); });
+	users.forEach( (SocketThread s)-> s.sendMessage(text));
 
 }
 public void textMessage(String msg, String username) {
-	users.forEach( (SocketThread s)-> {s.sendMessage("["+username+"]: "+msg);});
+	users.forEach( (SocketThread s)-> s.sendMessage("["+username+"]: "+msg) );
 }
 
 private static void addRoom(Chat_room c) {
 	roomsRegistry.add(c);
 }
 
-public static ArrayList<Chat_room> getAvaibleRooms() {
+public static ArrayList<Chat_room> getAvailableRooms() {
 	return (ArrayList<Chat_room>) roomsRegistry;
 }
 
@@ -71,6 +71,8 @@ public static Chat_room getRoomByName(String c) {
 public void deleteUser(SocketThread s) {
 	users.remove(s);
 	serverMessage(""+s.getUsername()+" left the chat");
+	if(users.isEmpty())
+		deleteRoom();
 }
 
 public int maxUsers(){
@@ -79,4 +81,8 @@ public int maxUsers(){
 public int activeUsers(){
 	return users.size();
 }
-}
+
+
+private void deleteRoom(){
+	roomsRegistry.remove(this);
+}}
