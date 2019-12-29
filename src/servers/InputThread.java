@@ -23,7 +23,7 @@ public class InputThread extends Thread {
 	public void run(){
 	
 	while(test){
-	String text = null;
+	String text;
 	
 	try {
 		if((text = stream.readLine())!=null)

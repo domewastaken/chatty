@@ -1,19 +1,9 @@
 package servers;
 
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class ChatWindow {
 
@@ -74,15 +64,11 @@ public class ChatWindow {
 		pane.add(textField, gbc_textField);
 		
 		textField.setColumns(10);
-		btnSubmit.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String g =textField.getText();
-				buffer.add(g);
-				textField.setText("");
-				//DEBUG USE ONLY //System.out.println("writed:"+g);
-			}
+		btnSubmit.addActionListener(e -> {		//this is lambda
+			String g =textField.getText();
+			buffer.add(g);
+			textField.setText("");
+			//DEBUG USE ONLY //System.out.println("writed:"+g);
 		});
 		textField.addKeyListener(new KeyAdapter() {
 
@@ -97,7 +83,7 @@ public class ChatWindow {
 	}
 	
 	public WindowPrinter getPrinter() {
-		return (String message)-> { textArea.append(message+"\n"); };	
+		return (String message)-> textArea.append(message+"\n");
 	}
 	
 	public Buffer getBuffer() {

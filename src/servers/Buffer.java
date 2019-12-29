@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Buffer {
 	private String internalBuffer ="";
-	private List<Object> listenerList = new ArrayList<Object>();
+	private List<Object> listenerList = new ArrayList<>();
 	
 	private  void fire() {
 		listenerList.forEach(  (Object a)->{ synchronized(a) {a.notify();} }  );

@@ -14,7 +14,7 @@ public class Client_Socket {
 	private PrintStream to_server;
 	private BufferedReader from_server;
 	private String address;
-	private String username; 	
+	//private String username;
 	private boolean stopExecution= false;
 	private int port;
 	private Buffer buffer;
@@ -79,13 +79,13 @@ public class Client_Socket {
 	private void play() throws IOException {
 
 		boolean test=true;
-		String c = null;
+		String c;
 		
 		c = from_server.readLine();	
 		userOutput.println("received "+ c);
 	
 		while(test){
-			c="";
+
 			c=from_server.readLine();
 			
 			if(!c.equals("start_asynchronous")){
@@ -148,7 +148,7 @@ public class Client_Socket {
 	public int getPort(){
 		return port;
 	}
-	public String getUsername() {
+	/*public String getUsername() {
 		return username;
-	}
+	}*/
 }

@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.Scanner;
 
 public  class SocketThread extends Thread{
@@ -22,10 +20,11 @@ public  class SocketThread extends Thread{
 	{
 		String i ="";
 	    if(!(c.length ==0)) {
-			for (Chat_room b : c) {
-				i = i.concat(b.getName() + "[" + b.activeUsers() + "/" + b.maxUsers() + "]" + ", ");
 
-			}
+	    	for (Chat_room b : c) {
+				i = i.concat(b.getName() + "[" + b.activeUsers() + "/" + b.maxUsers() + "]" + ", ");
+	    	}
+
 		}else{
 	    	i = "no room available";
 		}
@@ -83,7 +82,7 @@ public  class SocketThread extends Thread{
 		to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing avaible rooms");
 		String answer =from_client.readLine();
 		
-		String name="";
+		String name;
 	
 		switch (answer) {
 		case "c":
@@ -161,9 +160,6 @@ public  class SocketThread extends Thread{
 			
 	}
 
-	public InetAddress getClientIp(){
-		return socket.getInetAddress();
-	}
 	public String getStringClientIp(){
 		byte[] ipraw = socket.getInetAddress().getAddress();
 		return  ""+ipraw[0]+"."+ipraw[1]+"."+ipraw[2]+"."+ipraw[3];

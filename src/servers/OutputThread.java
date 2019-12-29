@@ -3,7 +3,6 @@ package servers;
 import java.io.PrintStream;
 
 public class OutputThread extends Thread {
-	private String text;
 	private PrintStream c;
 	private boolean test = true;
 	private Buffer userInput;
@@ -16,38 +15,33 @@ public class OutputThread extends Thread {
 		//this.username=username;
 		//this.p =p;
 	}
+
 	@Override
 	public void run(){
-	userInput.register(this);
-	while(test){
-		
-	if (userInput.isReady()) 
-	{
-	synchronized (userInput) {
-		text = userInput.getString();
-		userInput.clearBuffer();
-		}
-	
-	c.println(text);
-	//p.println("["+username+"]: "+text);
-	//DEBUG USE ONLY //System.out.println("sended:"+text);
+		userInput.register(this);
+		String text;
+		while(test){
 
-	}
-	else {
-		try {
-		synchronized (this) {
-			wait();
-		}
-			
-	} catch (InterruptedException e) {
+			if (userInput.isReady()) {
 
-		e.printStackTrace();
-	}}
-	
+			synchronized (userInput) {
+				text = userInput.getString();	//get the message
+				userInput.clearBuffer();
+			}
+			c.println(text);		//now print it to the PrintStream
+
+			//p.println("["+username+"]: "+text);
+			//DEBUG USE ONLY //System.out.println("sended:"+text);
+			}else {
+				try {
+					synchronized (this) {
+						wait();
+					}
+				} catch (InterruptedException e) { e.printStackTrace(); close();}
+			}
 	}
 	}
 
-	
 	public void close(){
 		test=false;
 	}
