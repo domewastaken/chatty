@@ -29,19 +29,18 @@ public class Multi_Server {
 	
 	public Multi_Server( int maxservers, int port){
 	
-		this.port = port;                              /**************************/
+		this.port = port;
 		this.maxServers = maxservers;                  /*Initialization of fields*/
-		this.sockets = new ArrayList<SocketThread>();  /**************************/
-		
-		/**************************************************************/
+		this.sockets = new ArrayList<>();
+
 		try {  server= new ServerSocket(port);  }
+
 		catch (IOException e)
         {
             System.out.println("cannot bind to the specified port");
             System.out.println(e.getMessage());
 		}
-		/**************************************************************/
-		
+
 		System.out.println("server bind to port: "+ port);
 	}
 
@@ -50,24 +49,22 @@ public class Multi_Server {
 		while(run)
 		{
 			if (connections_alives < maxServers){
-				
-				/**************************************************************/
+
 				try {
 					
 					SocketThread c =new SocketThread(server.accept(),this);     	//it passes also the current instance
 					c.start();															//for make possible to delete the connection 
-					sockets.add(c);			//add the current connection to the list	//with @method relase_resource
+					sockets.add(c);			//add the current connection to the list	//with @method release_resource
 				    System.out.println("connected to "+c.getStringClientIp());
-					}
+				}
 					
 				catch (IOException e){  System.out.println("error connecting to client");  }
-				/**************************************************************/
-				
+
 				synchronized(this){connections_alives++;}
 			}
 		}
 	}
-	public synchronized void relase_recource(SocketThread thread)
+	public synchronized void release_resource(SocketThread thread)
 	{
 		System.out.println("closed connection with "+thread.getStringClientIp());
 		sockets.remove(thread);
@@ -75,7 +72,9 @@ public class Multi_Server {
 		
 	}
 
-
+	public void close(){
+		run =false;
+	}
 	public int getPort(){ return port; }
 
 	

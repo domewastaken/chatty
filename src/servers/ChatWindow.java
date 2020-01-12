@@ -64,7 +64,9 @@ public class ChatWindow {
 		pane.add(textField, gbc_textField);
 		
 		textField.setColumns(10);
-		btnSubmit.addActionListener(e -> {		//this is lambda
+
+		btnSubmit.addActionListener(e -> {
+			//this is lambda
 			String g =textField.getText();
 			buffer.add(g);
 			textField.setText("");

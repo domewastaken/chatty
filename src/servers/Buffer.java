@@ -19,7 +19,9 @@ public class Buffer {
 	}
 
 	public String getString() {
-		return internalBuffer;
+		String str = internalBuffer;
+		clearBuffer();
+	    return str;
 	}
 	public boolean isReady() {
 		return !internalBuffer.isBlank();

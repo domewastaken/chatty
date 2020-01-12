@@ -1,72 +1,53 @@
 package servers;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public  class SocketThread extends Thread{
-	private Multi_Server delete;
-	private Socket socket;
-	private Scanner userInput;
-	private PrintStream to_client;
-	private BufferedReader from_client;
-	private Chat_room room ;
-	private String userName;
-	
-	private String toStringFromArray(Chat_room[] c)
+	private Multi_Server	 delete;
+	private Socket			 socket;
+	private PrintStream 	 to_client;
+	private BufferedReader 	 from_client;
+	private Chat_room 		 room;
+	private String			 userName;
+
+	public SocketThread(Socket s , Multi_Server m)
 	{
-		String i ="";
-	    if(!(c.length ==0)) {
+		this.delete = m ;
+		this.socket = s;
 
-	    	for (Chat_room b : c) {
-				i = i.concat(b.getName() + "[" + b.activeUsers() + "/" + b.maxUsers() + "]" + ", ");
-	    	}
-
-		}else{
-	    	i = "no room available";
-		}
-			return i;
-
-	}
-	public SocketThread(Socket s , Multi_Server m) 
-	{
-	this.delete = m ;
-	this.socket = s;
-	
-	userInput = new Scanner(System.in);
-	
-	try {
-		to_client = new PrintStream( socket.getOutputStream() );
-		from_client = new BufferedReader(new InputStreamReader( socket.getInputStream())) ;
-	} catch (IOException e) {e.printStackTrace();}
-	
+		try {
+			to_client = new PrintStream( socket.getOutputStream() );
+			from_client = new BufferedReader(new InputStreamReader( socket.getInputStream())) ;
+		} catch (IOException e) {e.printStackTrace();}
 	}
 
 	public void sendMessage(String msg){
 		to_client.println(msg);
 	}
 
-
 	@Override
 	public final void run() {
-	try { play(); }
-	catch (IOException e1) {
-		if( !(e1.getMessage()=="Connection reset") )
-		{ e1.printStackTrace(); }
-	}
+		try { play(); }
+		catch (IOException e1) {
+			if( !(e1.getMessage()=="Connection reset") )
+			{ e1.printStackTrace(); }
+		}
 
-	delete.relase_recource(this);
-	room.deleteUser(this);
-	to_client.close();
-	try {
-		from_client.close();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-	userInput.close();
+		delete.release_resource(this);
+		room.deleteUser(this);
+		to_client.close();
+		try {
+			from_client.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 
 	}
 	
@@ -79,7 +60,7 @@ public  class SocketThread extends Thread{
 
 		while(!start){
 			
-		to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing avaible rooms");
+		to_client.println("enter h for help");
 		String answer =from_client.readLine();
 		
 		String name;
@@ -92,7 +73,7 @@ public  class SocketThread extends Thread{
 			room = new Chat_room(name, 5);
 			
 			room.joinRoom(this);
-			to_client.println("start_asynchronous");
+
 			start=true;
 			break;
 		case "j":
@@ -110,10 +91,8 @@ public  class SocketThread extends Thread{
 				from_client.readLine();
 				break;
 			}
-			to_client.println("start_asynchronous");
 			start=true;
 			break;
-		
 		case "s":
 			
 			Chat_room[] d =new Chat_room[Chat_room.getAvailableRooms().toArray().length];
@@ -122,7 +101,10 @@ public  class SocketThread extends Thread{
 			to_client.println(tmp+" click enter for continue");
 			from_client.readLine();
 			break;
-		
+		case "h":
+
+			to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing available rooms");
+			break;
 		default:
 			System.out.println("error");
 			break;
@@ -166,6 +148,21 @@ public  class SocketThread extends Thread{
 		
 	}
 
+	private String toStringFromArray(@NotNull Chat_room[] c)
+	{
+		String i ="";
+		if(!(c.length ==0)) {
+
+			for (Chat_room b : c) {
+				i = i.concat(b.getName() + "[" + b.activeUsers() + "/" + b.maxUsers() + "]" + ", ");
+			}
+
+		}else{
+			i = "no room available";
+		}
+		return i;
+
+	}
 	public String getUsername() {
 		return userName;
 	}

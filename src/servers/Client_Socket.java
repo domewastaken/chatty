@@ -1,129 +1,82 @@
 package servers;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client_Socket {
+	private Buffer inputBuffer;
 	private Socket socket;
-	
 	private WindowPrinter userOutput;
 	private PrintStream to_server;
 	private BufferedReader from_server;
 	private String address;
-	//private String username;
+
 	private boolean stopExecution= false;
 	private int port;
-	private Buffer buffer;
+
+
 	public static void main(String[] args){
 		
 		new Client_Socket( 8080, new ChatWindow());
 	}
-	
-	
-	
-	
-	public Client_Socket( int port, ChatWindow window){
-		this.userOutput = window.getPrinter();
-		userOutput.println("enter the address");
+
+	public Client_Socket(int port, @NotNull ChatWindow window){
 		this.port = port;
-		this.buffer=window.getBuffer();
-		buffer.register(this);
+		this.userOutput = window.getPrinter();
+		this.inputBuffer=window.getBuffer();
+		inputBuffer.register(this);
+		userOutput.println("enter the address");
 
 		try {
 			synchronized (this){wait();}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		this.address=buffer.getString();
-		buffer.clearBuffer();
+
+		this.address = inputBuffer.getString();
+
 		try {
-			
-			socket = new Socket(InetAddress.getByAddress(new byte[]{ (byte) Integer.parseInt( address.split("\\.")[0]), 
-																	 (byte) Integer.parseInt( address.split("\\.")[1]),
-																	 (byte) Integer.parseInt( address.split("\\.")[2]),
-																	 (byte) Integer.parseInt( address.split("\\.")[3]) 
-															         } ), port);
+			socket = new Socket( Utils.parseStringToAddress(address) , port);
 	
 		} catch (IOException e) {
 			userOutput.println("errors during the connection");
 			stopExecution=true;
 		}
-		if(!stopExecution){
-		userOutput.println("connecting to "+address);
-		
-		
-	
-		try {
-			to_server = new PrintStream(socket.getOutputStream());
-			from_server = new BufferedReader(new InputStreamReader( socket.getInputStream()));
-		} catch (IOException e) { e.printStackTrace(); }
 
-		
-		try {
-			this.play();
-		} catch (IOException e) {e.printStackTrace();}
-		to_server.close();
-		try {
-		from_server.close();
-		} catch (IOException e) {e.printStackTrace();}
+		if(!stopExecution){
+			userOutput.println("connecting to "+address);
+
+			try {
+				to_server = new PrintStream(socket.getOutputStream());
+				from_server = new BufferedReader(new InputStreamReader( socket.getInputStream()));
+			} catch (IOException e) { e.printStackTrace(); }
+
+			try {
+				this.play();
+			} catch (IOException e) {e.printStackTrace();}
+
+			to_server.close();
+
+			try {
+				from_server.close();
+			} catch (IOException e) {e.printStackTrace();}
 		
 		}
 		
 	}
-	
-	
+
 	private void play() throws IOException {
 
-		boolean test=true;
-		String c;
-		
-		c = from_server.readLine();	
+		String c = from_server.readLine();
 		userOutput.println("received "+ c);
-	
-		while(test){
 
-			c=from_server.readLine();
-			
-			if(!c.equals("start_asynchronous")){
-				
-				userOutput.println(c);
-				while(true) {       
-				
-					if(buffer.isReady()) {
-
-						to_server.println(buffer.getString().trim());
-						buffer.clearBuffer();
-						break;
-						}
-				
-					else {
-					try {
-						synchronized (this) {
-							wait();
-						}
-						
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-						System.out.println("lollo");
-					}
-					
-				}}
-			
-			}else{
-				test=false;
-			}
-		}
-	
-	
-		
-		
-		userOutput.println("\nCHAT STARTED");
 		InputThread tr1=new InputThread(from_server,userOutput);
-		OutputThread tr2 = new OutputThread(to_server,buffer/*,username,userOutput*/);
+		OutputThread tr2 = new OutputThread(to_server,inputBuffer/*,username,userOutput*/);
 		tr1.start();
 		tr2.start();
 		try {
@@ -148,7 +101,5 @@ public class Client_Socket {
 	public int getPort(){
 		return port;
 	}
-	/*public String getUsername() {
-		return username;
-	}*/
+
 }
