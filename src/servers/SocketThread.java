@@ -1,6 +1,5 @@
 package servers;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,7 +16,7 @@ public  class SocketThread extends Thread{
 	private Chat_room 		 room;
 	private String			 userName;
 
-	public SocketThread(Socket s , Multi_Server m)
+	SocketThread(Socket s, Multi_Server m)
 	{
 		this.delete = m ;
 		this.socket = s;
@@ -28,7 +27,7 @@ public  class SocketThread extends Thread{
 		} catch (IOException e) {e.printStackTrace();}
 	}
 
-	public void sendMessage(String msg){
+	void sendMessage(String msg){
 		to_client.println(msg);
 	}
 
@@ -51,7 +50,7 @@ public  class SocketThread extends Thread{
 
 	}
 	
-	public void play() throws IOException {
+	private void play() throws IOException {
 		boolean start = false;
 		to_client.println("connection");
 
@@ -68,7 +67,7 @@ public  class SocketThread extends Thread{
 			switch (answer) {
 
 				case "c":
-					Boolean b = true;
+					boolean b = true;
 					to_client.println("enter a name for the room ");
 					name = from_client.readLine();
 					try {
@@ -90,12 +89,10 @@ public  class SocketThread extends Thread{
 					room = Chat_room.getRoomByName(name);
 
 					if (room == null) {
-						to_client.println("" + name + " room doesn't exist. Enter for continue");
-						from_client.readLine();
+						to_client.println("" + name + " room doesn't exist.");
 						break;
 					} else if (!room.joinRoom(this)) {
-						to_client.println("" + name + " room is full. Enter for continue");
-						from_client.readLine();
+						to_client.println("" + name + " room is full.");
 						break;
 					}
 					start = true;
@@ -103,13 +100,16 @@ public  class SocketThread extends Thread{
 
 				case "s":
 
-					to_client.println(getStringActiveRooms(Chat_room.getAvailableRooms()) + " click enter for continue");
-					from_client.readLine();
+					to_client.println(getStringActiveRooms(Chat_room.getAvailableRooms()));
+
 					break;
 
 				case "h":
 
 					to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing available rooms");
+					break;
+				default:
+					to_client.println("Unknown command "+answer+".Use h for help");
 					break;
 
 			}
@@ -147,22 +147,28 @@ public  class SocketThread extends Thread{
 
 	}
 
-	public String getStringClientIp() {
+	String getStringClientIp() {
 		byte[] ipraw = socket.getInetAddress().getAddress();
 		return "" + ipraw[0] + "." + ipraw[1] + "." + ipraw[2] + "." + ipraw[3];
 
 	}
 
-	private String getStringActiveRooms(@NotNull ArrayList<Chat_room> c) {
-		final String[] i = new String[1];
-		c.forEach((chat_room) -> i[0] = i[0].concat(chat_room.getName() + "[" + chat_room.activeUsers() + "/" + chat_room.maxUsers() + "]" + ", "));
+	private String getStringActiveRooms(ArrayList<Chat_room> c) {
+		String str="";
+		if (!c.isEmpty()){
+			for (Chat_room room: c) {
+				str= str.concat(room.getName() + "[" + room.activeUsers() + "/" + room.maxUsers() + "]" + ", ");
+			}
+		}else str = "no room available";
 
-		return i[0];
+		return str;
 	}
 
-	public String getUsername() {
+	String getUsername() {
 		return userName;
 	}
 
 
 }
+
+

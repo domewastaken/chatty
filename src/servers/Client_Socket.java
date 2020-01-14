@@ -1,6 +1,6 @@
 package servers;
 
-import org.jetbrains.annotations.NotNull;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class Client_Socket {
 		new Client_Socket( 8080, new ChatWindow());
 	}
 
-	public Client_Socket(int port, @NotNull ChatWindow window){
+	public Client_Socket(int port,  ChatWindow window){
 		this.port = port;
 		this.userOutput = window.getPrinter();
 		this.inputBuffer=window.getBuffer();
