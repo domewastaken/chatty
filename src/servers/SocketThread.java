@@ -96,23 +96,23 @@ public  class SocketThread extends Thread{
 						break;
 					}
 					start = true;
-					break;
+                    break;
 
-				case "s":
+                case "s":
 
-					to_client.println(getStringActiveRooms(Chat_room.getAvailableRooms()));
+                    to_client.println(getStringActiveRooms(Chat_room.getAvailableRooms()));
 
-					break;
+                    break;
 
-				case "h":
+                case "h":
 
-					to_client.println("enter c for create new room or _ j for join an existing room or _ s for showing available rooms");
-					break;
-				default:
-					to_client.println("Unknown command "+answer+".Use h for help");
-					break;
+                    to_client.println("Commands:_ c for create new room;_ j for join an existing room;_ s for showing available rooms;");
+                    break;
+                default:
+                    to_client.println("Unknown command " + answer + ".Use h for help");
+                    break;
 
-			}
+            }
 		}
 
 		InputThread tr1 = new InputThread(from_client) {

@@ -1,6 +1,7 @@
 package servers;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -77,12 +78,13 @@ public class ChatWindow {
 		textField.addKeyListener(new KeyAdapter() {
 
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					btnSubmit.doClick();
 				}
 			}
 		});
-
+		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		frame.setVisible(true);
 	}
 	

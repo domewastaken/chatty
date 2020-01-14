@@ -26,10 +26,11 @@ public class InputThread extends Thread {
 	String text;
 	
 	try {
-		if((text = stream.readLine())!=null)
-		output.println(text);
-	
-	} catch (IOException e) {
+        if ((text = stream.readLine()) != null) {
+            String textReplaced = text.replaceAll("_", "\n");
+            output.println(textReplaced);
+        }
+    } catch (IOException e) {
 		if (e.getMessage().equals("Connection reset"))
 		{
 			close();
