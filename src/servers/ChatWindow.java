@@ -10,10 +10,11 @@ public class ChatWindow {
 	private JFrame frame;
 	private JPanel pane;
 	private JTextField textField;
+	private JScrollPane scrollpane;
 	private JButton btnSubmit;
 	private JTextArea textArea = new JTextArea();
 	private Buffer buffer = new Buffer();
-	
+
 	public ChatWindow() {
 		initialize();
 	}
@@ -30,32 +31,33 @@ public class ChatWindow {
 		pane=(JPanel)frame.getContentPane();
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[] {30, 30, 50, 30, 30, 30, 0, 0};
+		gridBagLayout.rowHeights = new int[]{30, 30, 50, 30, 30, 30, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		
+
 		pane.setLayout(gridBagLayout);
-		textField= new JTextField();
+		textField = new JTextField();
 		textArea = new JTextArea();
 		textArea.setEditable(false);
 		btnSubmit = new JButton("Enter");
-		
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.gridheight = 6;
-		gbc_textArea.gridwidth = 2;
-		gbc_textArea.fill = GridBagConstraints.BOTH;
-		gbc_textArea.insets = new Insets(5, 5, 5, 5);
-		gbc_textArea.gridx = 0;
-		gbc_textArea.gridy = 0;
-		pane.add(textArea, gbc_textArea);
-		
+		scrollpane = new JScrollPane(textArea);
+
+		GridBagConstraints gbc_scrollpane = new GridBagConstraints();
+		gbc_scrollpane.gridheight = 6;
+		gbc_scrollpane.gridwidth = 2;
+		gbc_scrollpane.fill = GridBagConstraints.BOTH;
+		gbc_scrollpane.insets = new Insets(5, 5, 5, 5);
+		gbc_scrollpane.gridx = 0;
+		gbc_scrollpane.gridy = 0;
+		pane.add(scrollpane, gbc_scrollpane);
+
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
 		gbc_btnSubmit.insets = new Insets(5, 0, 0, 0);
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSubmit.gridx = 1;
 		gbc_btnSubmit.gridy = 6;
 		pane.add(btnSubmit, gbc_btnSubmit);
-		
+
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(5, 5, 0, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
