@@ -25,7 +25,7 @@ public class Client_Socket {
 		new Client_Socket( 8080, new ChatWindow());
 	}
 
-	public Client_Socket(int port,  ChatWindow window){
+	public Client_Socket(int port, ChatWindow window){
 		this.port = port;
 		this.userOutput = window.getPrinter();
 		this.inputBuffer=window.getBuffer();
@@ -76,7 +76,7 @@ public class Client_Socket {
 		userOutput.println("received "+ c);
 
 		InputThread tr1=new InputThread(from_server,userOutput);
-		OutputThread tr2 = new OutputThread(to_server,inputBuffer/*,username,userOutput*/);
+		OutputThread tr2 = new OutputThread(to_server,inputBuffer);
 		tr1.start();
 		tr2.start();
 		try {

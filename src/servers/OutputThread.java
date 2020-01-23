@@ -20,6 +20,7 @@ public class OutputThread extends Thread {
 	public void run(){
 		userInput.register(this);
 		String text;
+		String textReplaced;
 		while(test){
 
 			if (userInput.isReady()) {
@@ -28,7 +29,8 @@ public class OutputThread extends Thread {
 				text = userInput.getString();	//get the message
 				userInput.clearBuffer();
 			}
-			c.println(text);		//now print it to the PrintStream
+			textReplaced=text.replaceAll("_","/_");
+			c.println(textReplaced);		//now print it to the PrintStream
 
 			//p.println("["+username+"]: "+text);
 			//DEBUG USE ONLY //System.out.println("sended:"+text);
