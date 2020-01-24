@@ -1,4 +1,4 @@
-# chat-system v0.01
+# chat-system
 this is a open-source chat system.
 <br>If you want to contribute, make a pull request.
 
