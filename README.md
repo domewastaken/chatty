@@ -1,5 +1,5 @@
 # chat-system v0.01
-this is my first chat system.
+this is a open-source chat system.
 <br>If you want to contribute, make a pull request.
 
 Please follow and support the code 
@@ -8,3 +8,5 @@ Please follow and support the code
 or an improvement to this repository.
 
 Thanks for reading
+
+<h1>Relase notes</h1>
