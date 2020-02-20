@@ -4,7 +4,7 @@ package servers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 class Chat_room {
 
@@ -12,14 +12,13 @@ class Chat_room {
 	private List<SocketThread> users;
 	private int max;
 
-	private static List<Chat_room> roomsRegistry = new ArrayList<>();
+	private static List<Chat_room> roomsRegistry = new ArrayList<>();   //this is static!!
 
-//private String[] cronology;
 
 	Chat_room(String name, int max) throws Exception {
 		this.max = max;
 		this.setName(name);            //assign the name to the room
-		this.users = new ArrayList<>(max);    //initialize a list for roomsRegistry' components
+		this.users = new ArrayList<>(max);    //initialize a list for roomsRegistry's components
 		if (!Chat_room.addRoom(this)) {
 			throw new Exception();
 		}//add the current room to the registry
