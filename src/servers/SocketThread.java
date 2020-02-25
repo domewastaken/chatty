@@ -93,7 +93,7 @@ public class SocketThread extends Thread{
 								break;
 
 								case "/create":
-									boolean isPresent = true;
+									boolean isPresent = false;
 									if (room != null){
 										room.deleteUser(SocketThread.this);
 									}
@@ -101,11 +101,12 @@ public class SocketThread extends Thread{
 										room = new Chat_room(parameter[1], 5);
 									} catch (Exception e) {
 										to_client.println("this name already exist.Try another one");
-										isPresent = false;
+										isPresent = true;
 									}
-									if (isPresent) {
+									if (!isPresent) {
 										room.joinRoom(SocketThread.this);
 										/*start = true;*/
+										//to_client.println(sendRoomName(parameter[1]));
 										to_client.println("Chat Started in room:"+room.getName());
 									}
 									break;
@@ -148,6 +149,8 @@ public class SocketThread extends Thread{
 					}
 				}
 			}
+
+	
 		};
 		
 		Thread thr = new Thread(tr1);

@@ -9,11 +9,7 @@ public class InputThread extends Thread {
 	private BufferedReader stream;
 	private boolean test=true;
 	private WindowPrinter output;
-
-	InputThread(BufferedReader from)
-	{ this(from, System.out::println); }
-
-
+	
 	InputThread(BufferedReader from, WindowPrinter output){
 		this.stream=from;
 		this.output=output;
@@ -30,13 +26,13 @@ public class InputThread extends Thread {
 
             String textReplaced = text.replaceAll("(?<!/)_", "\n");
             String correctText = textReplaced.replaceAll("/_","_");
-            output.println(correctText);
+            output.println(correctText,ContentType.Chat_message);
         }
     } catch (IOException e) {
 		if (e.getMessage().equals("Connection reset"))
 		{
 			close();
-			output.println("server closed");
+			output.println("server closed",ContentType.Chat_message);
 		}
 		}
 

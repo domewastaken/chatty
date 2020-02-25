@@ -95,7 +95,6 @@ class Chat_room {
 	private void deleteRoom() {
 		roomsRegistry.remove(this);
 	}
-	@SuppressWarnings("")
 
 	private static boolean isNamePresent(String name) {
 		List<String> list= roomsRegistry.stream().map(Chat_room::getName).collect(Collectors.toList());

@@ -30,7 +30,7 @@ public class Client_Socket {
 		this.userOutput = window.getPrinter();
 		this.inputBuffer=window.getBuffer();
 		inputBuffer.register(this);
-		userOutput.println("enter the address");
+		userOutput.println("enter the address",ContentType.Chat_message);
 
 		try {
 			synchronized (this){wait();}
@@ -44,12 +44,12 @@ public class Client_Socket {
 			socket = new Socket( Utils.parseStringToAddress(address) , port);
 	
 		} catch (IOException e) {
-			userOutput.println("errors during the connection");
+			userOutput.println("errors during the connection",ContentType.Chat_message);
 			stopExecution=true;
 		}
 
 		if(!stopExecution){
-			userOutput.println("connecting to "+address);
+			userOutput.println("connecting to "+address,ContentType.Chat_message);
 
 			try {
 				to_server = new PrintStream(socket.getOutputStream());
@@ -73,7 +73,7 @@ public class Client_Socket {
 	private void play() throws IOException {
 
 		String c = from_server.readLine();
-		userOutput.println("received "+ c);
+		userOutput.println("received "+ c,ContentType.Chat_message);
 
 		InputThread tr1=new InputThread(from_server,userOutput);
 		OutputThread tr2 = new OutputThread(to_server,inputBuffer);
