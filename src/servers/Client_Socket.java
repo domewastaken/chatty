@@ -16,7 +16,6 @@ public class Client_Socket {
 	private BufferedReader from_server;
 	private String address;
 
-	private boolean stopExecution= false;
 	private int port;
 
 
@@ -26,9 +25,11 @@ public class Client_Socket {
 	}
 
 	public Client_Socket(int port, ChatWindow window){
+
 		this.port = port;
 		this.userOutput = window.getPrinter();
 		this.inputBuffer=window.getBuffer();
+
 		inputBuffer.register(this);
 		userOutput.println("enter the address",ContentType.Chat_message);
 
@@ -40,12 +41,15 @@ public class Client_Socket {
 
 		this.address = inputBuffer.getString();
 
+		boolean stopExecution = false;
+
 		try {
+
 			socket = new Socket( Utils.parseStringToAddress(address) , port);
 	
 		} catch (IOException e) {
 			userOutput.println("errors during the connection",ContentType.Chat_message);
-			stopExecution=true;
+			stopExecution =true;
 		}
 
 		if(!stopExecution){
@@ -57,7 +61,9 @@ public class Client_Socket {
 			} catch (IOException e) { e.printStackTrace(); }
 
 			try {
+
 				this.play();
+
 			} catch (IOException e) {e.printStackTrace();}
 
 			to_server.close();
@@ -77,8 +83,10 @@ public class Client_Socket {
 
 		InputThread tr1=new InputThread(from_server,userOutput);
 		OutputThread tr2 = new OutputThread(to_server,inputBuffer);
+
 		tr1.start();
 		tr2.start();
+
 		try {
 			tr1.join();
 			tr2.join();

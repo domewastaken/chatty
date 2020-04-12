@@ -26,6 +26,8 @@ public class InputThread extends Thread {
 
             String textReplaced = text.replaceAll("(?<!/)_", "\n");
             String correctText = textReplaced.replaceAll("/_","_");
+			correctText = correctText.replaceAll("/<","<");
+			correctText = correctText.replaceAll("/>",">");
             output.println(correctText,ContentType.Chat_message);
         }
     } catch (IOException e) {

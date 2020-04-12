@@ -19,21 +19,23 @@ public class OutputThread extends Thread {
 	@Override
 	public void run(){
 		userInput.register(this);
-		String text;
-		String textReplaced;
+		String text,textReplaced,textReplaced2;
+
 		while(test){
 
-			if (userInput.isReady()) {
+			if (userInput.isReady())
+			{
 
 			synchronized (userInput) {
 				text = userInput.getString();	//get the message
 				userInput.clearBuffer();
 			}
-			textReplaced=text.replaceAll("_","/_");
+
+			textReplaced= text.replaceAll("_","/_");
+			textReplaced = textReplaced.replaceAll("<","/<");
+			textReplaced = textReplaced.replaceAll(">","/>");
 			c.println(textReplaced);		//now print it to the PrintStream
 
-			//p.println("["+username+"]: "+text);
-			//DEBUG USE ONLY //System.out.println("sended:"+text);
 			}else {
 				try {
 					synchronized (this) {
