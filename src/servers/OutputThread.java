@@ -19,7 +19,7 @@ public class OutputThread extends Thread {
 	@Override
 	public void run(){
 		userInput.register(this);
-		String text,textReplaced,textReplaced2;
+		String text,textReplaced;
 
 		while(test){
 

@@ -24,7 +24,7 @@ public class Buffer {
 	    return str;
 	}
 	public boolean isReady() {
-		return !internalBuffer.isBlank();
+		return !(internalBuffer =="");
 	}
 	public void register(Object c) {
 		listenerList.add(c);
