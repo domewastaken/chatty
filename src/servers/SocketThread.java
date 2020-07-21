@@ -33,14 +33,19 @@ public class SocketThread extends Thread{
 
 	@Override
 	public final void run() {
-		try { play(); }
+		
+		
+		try { play();}
+
 		catch (IOException e1) {
 			if( !(e1.getMessage()=="Connection reset") )
-			{ e1.printStackTrace(); }
-		}
+				{ e1.printStackTrace();}}
 
 		delete.release_resource(this);
-		room.deleteUser(this);
+		
+		if(room!=null)			//this because if an user quits before entering a room 
+		room.deleteUser(this);	//there is a Java.lang.NullPointerException	
+					
 		to_client.close();
 		try {
 			from_client.close();
