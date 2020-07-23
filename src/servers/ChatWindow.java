@@ -29,15 +29,15 @@ public class ChatWindow {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("Java");
-		frame.setBounds(100, 100, 300, 327);
+		frame.setBounds(100, 100, 300, 314);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		pane=(JPanel)frame.getContentPane();
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 30, 30, 50, 30, 30, 30, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 30, 30, 50, 30, 30, 30, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 
 		pane.setLayout(gridBagLayout);
 		textField = new JTextField();
@@ -49,14 +49,14 @@ public class ChatWindow {
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel.gridwidth = 2;
-		gbc_panel.insets = new Insets(5, 5, 0, 5);
-		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.insets = new Insets(5, 5, 3, 5);
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
 		frame.getContentPane().add(panel, gbc_panel);
 		
-		lblNewLabel = new JLabel("Room name");
+		lblNewLabel = new JLabel("Room name:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		panel.add(lblNewLabel);
 		
@@ -68,13 +68,13 @@ public class ChatWindow {
 		gbc_scrollpane.gridheight = 6;
 		gbc_scrollpane.gridwidth = 2;
 		gbc_scrollpane.fill = GridBagConstraints.BOTH;
-		gbc_scrollpane.insets = new Insets(5, 5, 5, 0);
+		gbc_scrollpane.insets = new Insets(5, 5, 5, 5);
 		gbc_scrollpane.gridx = 0;
 		gbc_scrollpane.gridy = 1;
 		pane.add(scrollpane, gbc_scrollpane);
 
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
-		gbc_btnSubmit.insets = new Insets(5, 0, 5, 0);
+		gbc_btnSubmit.insets = new Insets(5, 0, 5, 5);
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSubmit.gridx = 1;
 		gbc_btnSubmit.gridy = 7;
@@ -112,12 +112,13 @@ public class ChatWindow {
 	}
 	
 	public WindowPrinter getPrinter() {
-		return (String message,ContentType type)-> {
 		
-		if(type == ContentType.Chat_message)
-			textArea.append(message+"\n");
-		else
-			room_label.setText(message);
+		return (String message,ContentType type)-> 
+		{
+			if(type == ContentType.Chat_message)
+				textArea.append(message+"\n");
+			else if(type == ContentType.Room_name)
+				room_label.setText(message);
 		};
 	}
 	

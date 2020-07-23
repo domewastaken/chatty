@@ -32,49 +32,47 @@ public class Client_Socket {
 
 		inputBuffer.register(this);
 		userOutput.println("enter the address",ContentType.Chat_message);
-
-		try {
-			synchronized (this){wait();}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		this.address = inputBuffer.getString();
-
-		boolean stopExecution = false;
-
-		try {
-
-			socket = new Socket( Utils.parseStringToAddress(address) , port);
+		
+		boolean test;
+		
+		do 
+		{
+			test=false;
+			try { synchronized (this){  wait();  }  
+			}catch (InterruptedException e) {  e.printStackTrace();  }
 	
-		} catch (IOException e) {
-			userOutput.println("errors during the connection",ContentType.Chat_message);
-			stopExecution =true;
-		}
+			this.address = inputBuffer.getString();
+	
+				try {
+					//this function transform a String in a InetAddress
+					socket = new Socket( Utils.parseStringToAddress(address) , port); 
+					
+				}catch (IOException e) {
+					userOutput.println("---errors during the connection---",ContentType.Chat_message);
+					test=true;
+				}catch(ArrayIndexOutOfBoundsException a) {
+					userOutput.println("---You must enter a valid Ip Address---",ContentType.Chat_message);	
+					test=true;
+				}catch(NumberFormatException a) {
+					userOutput.println("---You must enter a valid Ip Address---",ContentType.Chat_message);	
+					test=true;
+				}		
+		}while(test);
+			
+		userOutput.println("connecting to "+address,ContentType.Chat_message);
 
-		if(!stopExecution){
-			userOutput.println("connecting to "+address,ContentType.Chat_message);
+		try {
+			to_server = new PrintStream(socket.getOutputStream());
+			from_server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch (IOException e) { e.printStackTrace(); }
 
-			try {
-				to_server = new PrintStream(socket.getOutputStream());
-				from_server = new BufferedReader(new InputStreamReader( socket.getInputStream()));
-			} catch (IOException e) { e.printStackTrace(); }
-
-			try {
-
-				this.play();
-
-			} catch (IOException e) {e.printStackTrace();}
-
-			to_server.close();
-
-			try {
-				from_server.close();
-			} catch (IOException e) {e.printStackTrace();}
+		try { this.play(); } catch (IOException e) {e.printStackTrace();}
 		
-		}
-		
+		to_server.close();
+
+		try { from_server.close(); } catch (IOException e) {e.printStackTrace();}
 	}
+		
 
 	private void play() throws IOException {
 
@@ -91,13 +89,6 @@ public class Client_Socket {
 			tr1.join();
 			tr2.join();
 		} catch (InterruptedException e) {e.printStackTrace();}
-		
-		to_server.close();
-		
-		try {
-			from_server.close();
-		} catch (IOException e) {e.printStackTrace();}
-		
 		
 	}
 

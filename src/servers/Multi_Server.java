@@ -74,12 +74,10 @@ public class Multi_Server {
 
 	}
 
-	@SuppressWarnings("unused")
 	public void close() {
 		run = false;
 	}
 
-	@SuppressWarnings("unused")
 	public int getPort() {
 		return port;
 	}

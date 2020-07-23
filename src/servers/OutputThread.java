@@ -28,7 +28,7 @@ public class OutputThread extends Thread {
 
 			synchronized (userInput) {
 				text = userInput.getString();	//get the message
-				userInput.clearBuffer();
+
 			}
 
 			textReplaced= text.replaceAll("_","/_");

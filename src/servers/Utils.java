@@ -5,7 +5,7 @@ import java.net.UnknownHostException;
 
 public class Utils {
 
-    public static InetAddress parseStringToAddress(String address) throws UnknownHostException {
+    public static InetAddress parseStringToAddress(String address) throws UnknownHostException,ArrayIndexOutOfBoundsException{
 
         return InetAddress.getByAddress( new byte[]{ (byte) Integer.parseInt( address.split("\\.")[0]),
                                                      (byte) Integer.parseInt( address.split("\\.")[1]),

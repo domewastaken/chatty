@@ -29,5 +29,5 @@ public class Buffer {
 	public void register(Object c) {
 		listenerList.add(c);
 	}
-	public void clearBuffer() {internalBuffer = "";}
+	private void clearBuffer() {internalBuffer = "";}
 }

@@ -61,7 +61,7 @@ public class SocketThread extends Thread{
 
 		to_client.println("enter your username");
 		userName = from_client.readLine();
-
+		to_client.println("---registered as "+ userName+ "---");
 		to_client.println("enter /help for help");
 
 
