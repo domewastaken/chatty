@@ -1,7 +1,12 @@
 package servers;
 
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Style;
+import javax.swing.text.StyleContext;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,8 +18,9 @@ public class ChatWindow {
 	private JTextField textField;
 	private JScrollPane scrollpane;
 	private JButton btnSubmit;
-	private JTextArea textArea = new JTextArea();
-	private Buffer buffer = new Buffer();
+	private JTextPane textPane;
+	private DefaultStyledDocument document;
+	private Buffer buffer;
 	private JPanel panel;
 	private JLabel lblNewLabel;
 	private JLabel room_label;
@@ -40,10 +46,13 @@ public class ChatWindow {
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 
 		pane.setLayout(gridBagLayout);
+		document = new DefaultStyledDocument();
+		textPane = new JTextPane(document);
 		textField = new JTextField();
-		textArea = new JTextArea();
-		textArea.setEditable(false);
+		buffer = new Buffer();
+		
 		btnSubmit = new JButton("Enter");
+		textPane.setEditable(false);
 		
 		panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
@@ -62,7 +71,7 @@ public class ChatWindow {
 		
 		room_label = new JLabel("no room");
 		panel.add(room_label);
-		scrollpane = new JScrollPane(textArea);
+		scrollpane = new JScrollPane(textPane);
 
 		GridBagConstraints gbc_scrollpane = new GridBagConstraints();
 		gbc_scrollpane.gridheight = 6;
@@ -106,17 +115,21 @@ public class ChatWindow {
 			}
 		});
 		
-		DefaultCaret caret = (DefaultCaret) textArea.getCaret();
+		DefaultCaret caret = (DefaultCaret) textPane.getCaret();
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		frame.setVisible(true);
+
 	}
-	
 	public WindowPrinter getPrinter() {
 		
 		return (String message,ContentType type)-> 
 		{
 			if(type == ContentType.Chat_message)
-				textArea.append(message+"\n");
+				try {
+					document.insertString(document.getEndPosition().getOffset() -1 ,message+"\n", StyleType.MESSAGE_STYLE.getStyle() );
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
 			else if(type == ContentType.Room_name)
 				room_label.setText(message);
 		};

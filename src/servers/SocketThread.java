@@ -44,7 +44,7 @@ public class SocketThread extends Thread{
 		delete.release_resource(this);
 		
 		if(room!=null)			//this because if an user quits before entering a room 
-		room.deleteUser(this);	//there is a Java.lang.NullPointerException	
+			room.deleteUser(this);	//there is a Java.lang.NullPointerException	
 					
 		to_client.close();
 		try {
