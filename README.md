@@ -10,3 +10,6 @@ or an improvement to this repository.
 Thanks for reading
 
 <h1>Relase notes</h1>
+v0.1 first pre-release
+there is a working chat software with 
+client gui and server
