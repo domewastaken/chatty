@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.Style;
-import javax.swing.text.StyleContext;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -124,14 +122,20 @@ public class ChatWindow {
 		
 		return (String message,ContentType type)-> 
 		{
-			if(type == ContentType.Chat_message)
+			if(type == ContentType.Chat_message) {
 				try {
 					document.insertString(document.getEndPosition().getOffset() -1 ,message+"\n", StyleType.MESSAGE_STYLE.getStyle() );
 				} catch (BadLocationException e) {
 					e.printStackTrace();
-				}
-			else if(type == ContentType.Room_name)
-				room_label.setText(message);
+			}}else if(type == ContentType.Chat_info) {
+					
+					try {
+						document.insertString(document.getEndPosition().getOffset() -1 ,message+"\n", StyleType.INFO_STYLE.getStyle() );
+				} catch (BadLocationException e) {
+					e.printStackTrace(); 
+			}}else if(type == ContentType.Room_name) {
+					room_label.setText(message);
+			}
 		};
 	}
 	

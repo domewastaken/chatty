@@ -26,9 +26,12 @@ public class SocketThread extends Thread{
 			from_client = new BufferedReader(new InputStreamReader( socket.getInputStream())) ;
 		} catch (IOException e) {e.printStackTrace();}
 	}
-
+	void sendRoomName(String i) {to_client.println("<<roomname$ "+i+" >>");}
+	void sendInfo(String i) {to_client.println("<<info$ "+i+" >>");}
+	void sendInfo(String i,String type) {to_client.println("<<info,"+type+"$ "+i+" >>");}
+	
 	void sendMessage(String msg){
-		to_client.println(msg);
+		to_client.println("<<msg$ "+msg+" >>");
 	}
 
 	@Override
@@ -59,10 +62,10 @@ public class SocketThread extends Thread{
 
 		to_client.println("connection");
 
-		to_client.println("enter your username");
+		sendMessage("enter your username");
 		userName = from_client.readLine();
-		to_client.println("---registered as "+ userName+ "---");
-		to_client.println("enter /help for help");
+		sendInfo("---registered as "+ userName+ "---");
+		sendInfo("enter /help for help");
 
 
 
@@ -89,12 +92,12 @@ public class SocketThread extends Thread{
 							switch (parameter[0]) {
 
 								case "/help":
-									to_client.println("Commands:_ /create <name> for create new room and join it;" +
-											                   "_ /join <name> for join an existing room;" +
-											                   "_ /show for show all available rooms;" +
-											                   "_ /switch <name> for change the room" +
-											                   "_ /quit for close this application" +
-											                   "_ /help for show this list");
+										sendInfo("Commands:_ /create <name> for create new room and join it;" +
+											              "_ /join <name> for join an existing room;" +
+											              "_ /show for show all available rooms;" +
+											              "_ /switch <name> for change the room" +
+											              "_ /quit for close this application" +
+											              "_ /help for show this list");
 								break;
 
 								case "/create":
@@ -105,14 +108,15 @@ public class SocketThread extends Thread{
 									try {
 										room = new Chat_room(parameter[1], 5);
 									} catch (Exception e) {
-										to_client.println("this name already exist.Try another one");
+										sendInfo("this name already exist.Try another one");
 										isPresent = true;
 									}
 									if (!isPresent) {
 										room.joinRoom(SocketThread.this);
-										/*start = true;*/
+										
 										//to_client.println(sendRoomName(parameter[1]));
-										to_client.println("Chat Started in room:"+room.getName());
+										sendInfo("Chat Started in room:"+room.getName());
+										sendRoomName(room.getName());
 									}
 									break;
 
@@ -121,14 +125,14 @@ public class SocketThread extends Thread{
 									room = Chat_room.getRoomByName(parameter[1]);
 
 									if (room == null) {
-										to_client.println("" + parameter[1] + " room doesn't exist.");
+										sendInfo("" + parameter[1] + " room doesn't exist.");
 									} else if (!room.joinRoom(SocketThread.this)) {
-										to_client.println("" + parameter[1] + " room is full.");
-									}
+										sendInfo("" + parameter[1] + " room is full.");
+									}else {sendRoomName(room.getName());}
 								break;
 
 								case "/show":
-									to_client.println(getStringActiveRooms(Chat_room.getAvailableRooms()));
+									sendInfo(getStringActiveRooms(Chat_room.getAvailableRooms()));
 								break;
 
 								case "/switch":
@@ -137,8 +141,9 @@ public class SocketThread extends Thread{
 										room.deleteUser(SocketThread.this);
 										room = newRoom;
 										room.joinRoom(SocketThread.this);
-										sendMessage("room changed to "+room.getName());
-									}else{sendMessage("no room found");}
+										sendInfo("room changed to "+room.getName());
+										sendRoomName(room.getName());
+									}else{sendInfo("no room found");}
 								break;
 
 								case "/quit":
@@ -146,7 +151,7 @@ public class SocketThread extends Thread{
 								break;
 
 								default:
-									to_client.println("Unknown command " + parameter[0] + ".Use /help for help");
+									sendInfo("Unknown command " + parameter[0] + ".Use /help for help");
 								break;
 							}
 

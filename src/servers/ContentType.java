@@ -2,5 +2,5 @@ package servers;
 
 public enum ContentType {
 	Chat_message,
-	Room_name;
+	Room_name, Chat_info;
 }
