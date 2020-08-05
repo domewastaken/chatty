@@ -11,5 +11,5 @@ Thanks for reading
 
 <h1>Relase notes</h1>
 <br>
-<h3>---v0.1 first pre-release---</h3><br>
+<h3>---v0.1 first pre-release---</h3>
 >>there is a working chat software with client gui and server
