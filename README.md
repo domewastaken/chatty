@@ -1,5 +1,5 @@
 # chat-system
-this is a open-source chat system.
+This is a open-source chat application.
 <br>If you want to contribute, make a pull request.
 
 Please follow and support the code 
@@ -11,4 +11,4 @@ Thanks for reading
 
 <h1>Relase notes</h1>
 <h3>---v0.1 first pre-release---</h3>
->>there is a working chat software with client gui and server
+>>there is a working chat software with a client GUI and a server
