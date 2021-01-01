@@ -9,14 +9,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class SocketThread extends Thread{
-	private Multi_Server	 delete;
+	private ChatServer	 delete;
 	private Socket			 socket;
 	private PrintStream 	 to_client;
 	private BufferedReader 	 from_client;
 	private Chat_room 		 room;
 	private String			 userName;
 
-	SocketThread(Socket s, Multi_Server m)
+	SocketThread(Socket s, ChatServer m)
 	{
 		this.delete = m ;
 		this.socket = s;
@@ -59,9 +59,7 @@ public class SocketThread extends Thread{
 	}
 	
 	private void play() throws IOException {
-
-		to_client.println("connection");
-
+		
 		sendMessage("enter your username");
 		userName = from_client.readLine();
 		sendInfo("---registered as "+ userName+ "---");

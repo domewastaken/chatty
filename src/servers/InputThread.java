@@ -1,13 +1,11 @@
 
 package servers;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 
-
-
-public class InputThread extends Thread {
+class InputThread extends Thread {
+	
 	private BufferedReader stream;
 	private boolean test=true;
 	private WindowPrinter output;

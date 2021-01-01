@@ -23,11 +23,14 @@ public class Buffer {
 		clearBuffer();
 	    return str;
 	}
+	
 	public boolean isReady() {
 		return !(internalBuffer =="");
 	}
+	
 	public void register(Object c) {
 		listenerList.add(c);
 	}
 	private void clearBuffer() {internalBuffer = "";}
+
 }

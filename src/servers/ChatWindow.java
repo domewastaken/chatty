@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ChatWindow {
+public class ChatWindow{
 
 	private JFrame frame;
 	private JPanel pane;

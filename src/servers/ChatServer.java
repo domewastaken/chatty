@@ -1,12 +1,11 @@
 package servers;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-public class Multi_Server {
+public class ChatServer {
 
 	private ServerSocket server;                //this accept all the requests
 	private int port;                            //the port of the server
@@ -17,17 +16,17 @@ public class Multi_Server {
 
 
 	public static void main(String[] args) {
-		Multi_Server c = new Multi_Server(10);
+		ChatServer c = new ChatServer(10);
 		c.start();
 	}
 
 
-	public Multi_Server(int maxservers) {
+	public ChatServer(int maxservers) {
 
-		this(maxservers, 8080);
+		this(maxservers,8080);
 	}
 
-	public Multi_Server(int maxservers, int port) {
+	public ChatServer(int maxservers, int port) {
 
 		this.port = port;
 		this.maxServers = maxservers;                  /*Initialization of fields*/
