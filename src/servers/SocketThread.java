@@ -173,11 +173,14 @@ public class SocketThread extends Thread{
 	}
 
 	String getStringClientIp() {
-		byte[] ipraw = socket.getInetAddress().getAddress();
-		return "" + ipraw[0] + "." + ipraw[1] + "." + ipraw[2] + "." + ipraw[3];
 
+		return socket.getInetAddress().getHostAddress();			
 	}
-
+	
+	int getPort(){
+		return socket.getPort();
+		
+	}
 	private String getStringActiveRooms(ArrayList<Chat_room> c) {
 		String str="";
 		if (!c.isEmpty()){
