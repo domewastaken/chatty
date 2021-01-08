@@ -1,4 +1,4 @@
-package servers;
+package thadome23.chatty.impl;
 
 import java.awt.Color;
 
@@ -6,9 +6,9 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
-public enum StyleType {
+enum StyleType {
 	MESSAGE_STYLE("message",Color.BLACK),
-	INFO_STYLE("info",Color.ORANGE),
+	INFO_STYLE("info",Color.GREEN),
 	ERROR_STYLE("error",Color.RED);
 	
 	private static class init { static StyleContext context = new StyleContext();}

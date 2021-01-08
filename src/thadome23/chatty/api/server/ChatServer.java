@@ -1,4 +1,4 @@
-package servers;
+package thadome23.chatty.api.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,11 +14,6 @@ public class ChatServer {
 	private boolean run = true;
 	private int connections_alive = 0;            //the currents connections alive
 
-
-	public static void main(String[] args) {
-		ChatServer c = new ChatServer(10);
-		c.start();
-	}
 
 	/****************************constructors start*********************************************/
 	public ChatServer(int maxservers){

@@ -1,4 +1,4 @@
-package servers;
+package thadome23.chatty.api.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 
 public class ChatClient {
 	private Buffer inputBuffer;
@@ -17,12 +18,6 @@ public class ChatClient {
 	private int port;			// normally is 8080 
 
 
-	public static void main(String[] args){
-		ChatWindow c= new ChatWindow();								//these things gets executed
-		new ChatClient( 8080, c.getPrinter(), c.getBuffer());
-	}
-	
-	
 	//**************************start of constructors************************************************
 	public ChatClient(int port, WindowPrinter printer ,Buffer buff, InetAddress ip){
 
@@ -30,8 +25,6 @@ public class ChatClient {
 		this.ip = ip;
 		this.userOutput = printer;
 		this.inputBuffer=buff;
-		
-		inputBuffer.register(this);
 		
 		connect();
 	}
@@ -41,60 +34,60 @@ public class ChatClient {
 		this.port = port;
 		this.userOutput = printer;
 		this.inputBuffer=buff;
-
-		inputBuffer.register(this);
-		
+	
 		userOutput.println("enter the address",ContentType.Chat_message);
 		
 		boolean flag ;
 
 		do{
 			flag = false;
-			try { 
-				synchronized (this){  wait();  }  //wait for the input
-			}catch (InterruptedException e) {  e.printStackTrace();  }
-	
-			String addr = inputBuffer.getString();
 		
 			try {
-				
+				String addr = inputBuffer.getString();
+					
 				this.ip = parseStringToAddress(addr);
-				
-			}catch (ArrayIndexOutOfBoundsException | UnknownHostException e1) {
-				
-				userOutput.println("---You must enter a valid Ip Address---",ContentType.Chat_message);	
-				flag = true;
+					
+				}catch (ArrayIndexOutOfBoundsException | UnknownHostException e1) {
+					userOutput.println("---You must enter a valid Ip Address---",ContentType.Chat_message);	
+					flag = true;
+					
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 			}
-			
+		
 		}while(flag);
 
 		connect();
 	}
 	//**************************end of constructors************************************************
 	
-	private void connect() {
-
+	private void connect()
+	{
+		boolean test = true;
+		
 		try {
 			socket = new Socket(ip, port); 	//connects to the server
 		} catch (IOException e1) {
-
+			test=false;
 			userOutput.println("---errors during connection---",ContentType.Chat_message);	
 		} 	
-
-		userOutput.println("connected to server" ,ContentType.Chat_message);
 		
-		try {														//	initializes I/O		
-			InputThread tr1=new InputThread(new BufferedReader(new InputStreamReader(socket.getInputStream())),userOutput);		
-			OutputThread tr2 = new OutputThread(new PrintStream(socket.getOutputStream()),inputBuffer);		
+		if (test) {
+				userOutput.println("connected to server" ,ContentType.Chat_message);
 			
-			tr1.start();
-			tr2.start();
-
-			tr1.join();
-			tr2.join();
-
-		} catch (IOException | InterruptedException e) {e.printStackTrace();}
-		
+			try {															
+				InputThread tr1=new InputThread(new BufferedReader(new InputStreamReader(socket.getInputStream())),userOutput);		
+				OutputThread tr2 = new OutputThread(new PrintStream(socket.getOutputStream()),inputBuffer);		//	initializes I/O	
+				
+				tr1.start();
+				tr2.start();
+	
+				tr1.join();
+				tr2.join();
+	
+			} catch (IOException | InterruptedException e) {  e.printStackTrace();} 
+			
+		}
 	}
 
 

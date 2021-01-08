@@ -1,4 +1,4 @@
-package servers;
+package thadome23.chatty.api.client;
 
 public enum ContentType {
 	Chat_message,

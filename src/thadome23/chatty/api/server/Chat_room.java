@@ -1,4 +1,4 @@
-package servers;
+package thadome23.chatty.api.server;
 
 
 import java.util.ArrayList;

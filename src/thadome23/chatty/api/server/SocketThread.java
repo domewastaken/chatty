@@ -1,4 +1,4 @@
-package servers;
+package thadome23.chatty.api.server;
 
 
 import java.io.BufferedReader;
@@ -8,7 +8,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class SocketThread extends Thread{
+class SocketThread extends Thread{
 	private ChatServer	 delete;
 	private Socket			 socket;
 	private PrintStream 	 to_client;
@@ -26,8 +26,11 @@ public class SocketThread extends Thread{
 			from_client = new BufferedReader(new InputStreamReader( socket.getInputStream())) ;
 		} catch (IOException e) {e.printStackTrace();}
 	}
+	
 	void sendRoomName(String i) {to_client.println("<<roomname$ "+i+" >>");}
+	
 	void sendInfo(String i) {to_client.println("<<info$ "+i+" >>");}
+	
 	void sendInfo(String i,String type) {to_client.println("<<info,"+type+"$ "+i+" >>");}
 	
 	void sendMessage(String msg){
@@ -36,7 +39,6 @@ public class SocketThread extends Thread{
 
 	@Override
 	public final void run() {
-		
 		
 		try { play();}
 

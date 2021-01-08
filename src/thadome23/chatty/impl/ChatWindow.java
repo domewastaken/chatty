@@ -1,15 +1,19 @@
-package servers;
+package thadome23.chatty.impl;
 
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultStyledDocument;
 
+import thadome23.chatty.api.client.Buffer;
+import thadome23.chatty.api.client.ContentType;
+import thadome23.chatty.api.client.WindowPrinter;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ChatWindow{
+class ChatWindow{
 
 	private JFrame frame;
 	private JPanel pane;

@@ -1,4 +1,4 @@
-package servers;
+package thadome23.chatty.api.client;
 
 import java.io.PrintStream;
 
@@ -19,32 +19,21 @@ class OutputThread extends Thread {
 	@Override
 	public void run(){
 		
-		userInput.register(this);
-		String text,textReplaced;
+		String text = "",textReplaced;
 		
 		while(test){
-
-			if (userInput.isReady())
-			{
-				synchronized (userInput) {
-					
+			
+			synchronized (userInput) {
+				try {
 					text = userInput.getString();	//get the message
+				} catch (InterruptedException e) {  e.printStackTrace();  }	
+			}
 	
-				}
-	
-				textReplaced= text.replaceAll("_","/_");
-				textReplaced = textReplaced.replaceAll("<","/<");
-				textReplaced = textReplaced.replaceAll(">","/>");
+			textReplaced= text.replaceAll("_","/_");
+			textReplaced = textReplaced.replaceAll("<","/<");
+			textReplaced = textReplaced.replaceAll(">","/>");
 				
-				stream.println(textReplaced);		//now print it to the PrintStream
-	
-				}else {
-					try {
-						synchronized (this) {
-							wait();
-						}
-					} catch (InterruptedException e) { e.printStackTrace(); close();}
-				}
+			stream.println(textReplaced);		//now print it to the PrintStream
 		}
 	}
 
