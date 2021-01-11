@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+     
+      <modelVersion>4.0.0</modelVersion>
+     
+      <groupId>thadome23.chatty</groupId>
+      <artifactId>chatty</artifactId>
+      <version>1.0-ALPHA</version>
+     
+      <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+      </properties>
+     
+		
+   <build>
+   
+    <plugins>
+    
+      <plugin>
+      
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.0</version>
+        
+        <executions>
+          
+          <execution>
+            <id>client</id>
+            <goals><goal>jar</goal></goals>
+            <phase>package</phase>
+            <configuration>
+              <classifier>client</classifier>
+			   <archive>
+               <manifest>
+			  		<mainClass>thadome23.chatty.impl.Client_app</mainClass>
+			  	</manifest>
+           	 </archive>
+            </configuration>
+          </execution>
+         
+          <execution>
+            <id>server</id>
+            <goals><goal>jar</goal></goals>
+            <phase>package</phase>
+            <configuration>
+              <classifier>server</classifier>
+             	 
+             
+              <archive>
+               <manifest>
+			  		<mainClass>thadome23.chatty.impl.Server_app</mainClass>
+			  	</manifest>
+           	 </archive>
+         
+            </configuration>
+          
+          </execution>
+        </executions>
+     
+      </plugin>
+  
+    </plugins>
+    
+  </build>
+  
+</project>
