@@ -1,6 +1,6 @@
 # chatty
 This is a open-source chat application.
-<br>If you want to contribute, make a pull request.
+<br>If you want to contribute, make a fork.
 
 Please follow and support the code 
 <br>any idea or issue will be accepted.
