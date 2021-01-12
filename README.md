@@ -1,4 +1,4 @@
-# chat-system
+# chatty
 This is a open-source chat application.
 <br>If you want to contribute, make a pull request.
 
