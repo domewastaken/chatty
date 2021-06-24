@@ -9,11 +9,12 @@ public class Client_app {
 			
 	public static void main(String[] args){
 		
-		ClientGui w = new ClientGui();
+		ClientGui gui = new ClientGui();
 		
-		WindowPrinter print = w.getPrinter();
+		WindowPrinter print = gui.getPrinter();
 		
-		Buffer buff =  w.getBuffer();		
+		Buffer buff = gui.getBuffer();		
+		
 		
 		ChatClient client = new ChatClient(print,buff);	
 		
@@ -33,7 +34,8 @@ public class Client_app {
 			try {
 				addr = buff.getString();
 				print.println(">"+ addr, ContentType.Chat_message);
-				client.connect(ChatClient.parseStringToAddress(addr), 8080);
+				
+				client.connect( ChatClient.parseStringToAddress(addr) , 8080);
 					
 			} catch (ConnectException | ArrayIndexOutOfBoundsException | NumberFormatException | UnknownHostException e) {
 					

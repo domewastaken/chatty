@@ -29,7 +29,7 @@ class InputThread extends Thread {
 		    	if (e.getMessage().equals("Connection reset")){	
 				    close();
 				    output.println("server closed",ContentType.Chat_message);
-				}
+				}else {e.printStackTrace();}
 			}
 			
 		    if (text != null) {

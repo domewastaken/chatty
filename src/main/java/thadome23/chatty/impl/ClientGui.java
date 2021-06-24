@@ -133,6 +133,7 @@ public class ClientGui{
 		frame.setVisible(true);
 
 	}
+	
 	public WindowPrinter getPrinter() {
 		
 		return (String message,ContentType type)-> {

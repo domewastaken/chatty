@@ -46,6 +46,8 @@ class SocketThread extends Thread{
 		
 		delete.release_resource(this);
 		
+	}
+	public void closeConnection() {
 		if(room!=null)			//this because if an user quits before entering a room 
 			room.deleteUser(this);	//there is a Java.lang.NullPointerException	
 					
@@ -55,7 +57,6 @@ class SocketThread extends Thread{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	private void play() throws IOException {
@@ -79,7 +80,8 @@ class SocketThread extends Thread{
 						text = from_client.readLine();
 					} catch (IOException e) {
 						if(e.getMessage()=="Connection reset"){test =false;}
-						else{e.printStackTrace();}
+						else if(e.getMessage()=="Stream closed" || e.getMessage()=="Socket closed"){test =false;}
+						//else{e.printStackTrace();}
 					}
 
 					if(text!=null) {
@@ -154,6 +156,7 @@ class SocketThread extends Thread{
 
 								case "/quit":
 									test = false;
+									
 								break;
 
 								default:

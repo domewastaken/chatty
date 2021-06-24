@@ -19,7 +19,7 @@ import javax.swing.JButton;
 public class ServerGUI {
 
 	private JFrame		frame;
-	private Runnable 	app;
+	private Thread  	app;
 	private ChatServer 	server;
 	private JTextField 	port;
 	private JLabel 		status;
@@ -31,11 +31,7 @@ public class ServerGUI {
 	public ServerGUI(ChatServer c) {
 		
 		server = c;
-		app = new Runnable() {
-			public void run() {
-				c.start();
-			}
-		};
+		
 		initialize();
 	}
 
@@ -115,25 +111,30 @@ public class ServerGUI {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
-					new Thread(app).start();
+					startS();
 					status.setText("online"); 
 					startBtn.setEnabled(false);
 					stopBtn.setEnabled(true);
 					
 				}
+
+				
 			});
 		stopBtn.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				server.close();
-
-				System.exit(0);
+				stopS();
+				status.setText("offline"); 
+				startBtn.setEnabled(true);
+				stopBtn.setEnabled(false);
+				//System.exit(0);
 				
 				
 			}
+
+		
 		});
 		
 		frame.addWindowListener(new WindowListener() {
@@ -152,20 +153,28 @@ public class ServerGUI {
 			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				server.close();
-			}
-			
-			@Override
-			public void windowClosed(WindowEvent e) {
-				server.close();
+				if(server.isOnline())
+					server.destroy();	
 				System.exit(0);
 			}
-			
+			@Override
+			public void windowClosed(WindowEvent e) {}
 			@Override
 			public void windowActivated(WindowEvent e) {}
 		
 		});
 		
+	}
+	
+	private void startS() {
+		app = new Thread( () -> server.start() );
+				
+		app.start();
+		
+	}
+	private void stopS() {
+		
+		server.close();
 	}
 }
 

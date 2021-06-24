@@ -11,7 +11,7 @@ public class ChatServer {
 	private int port;                            //the port of the server
 	private int maxServers;                    //the maximum numbers of servers(connections) that can hold
 	private List<SocketThread> sockets;            //the sockets
-	private boolean run = true;
+	private boolean run = false;
 	private int connections_alive = 0;            //the currents connections alive
 
 
@@ -24,11 +24,13 @@ public class ChatServer {
 
 		this.port = port;
 		this.maxServers = maxservers;                  /*Initialization of fields*/
-		this.sockets = new ArrayList<>();
+		this.sockets = new ArrayList<>(maxservers);
 
 	}
 	
 	public void start() {
+		
+		run = true;
 		
 		try {  server= new ServerSocket(port);  }
 		catch (IOException e)
@@ -61,9 +63,11 @@ public class ChatServer {
 				}
 			}
 		}
+	
 	}
 
 	public synchronized void release_resource(SocketThread thread) {
+		thread.closeConnection();
 		System.out.println("closed connection with " + thread.getStringClientIp());
 		sockets.remove(thread);
 		synchronized (this) {
@@ -75,8 +79,28 @@ public class ChatServer {
 
 	public void close() {
 		run = false;
+		int a = connections_alive;
+		
+		for(int i = 0; i<a; i++) {
+			release_resource(sockets.get(i));
+		}
+		
+		try {
+			server.close();
+		} catch (IOException e) {
+			
+			System.out.println("error 123");
+		}
 		System.out.println("server closed");
-
+	}
+	
+	public void destroy() {
+	
+		System.exit(0);
+	}
+	
+	public boolean isOnline() {
+		return run;
 	}
 
 	public int getPort() {
