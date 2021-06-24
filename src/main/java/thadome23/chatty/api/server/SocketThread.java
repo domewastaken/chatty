@@ -9,16 +9,15 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 class SocketThread extends Thread{
-	private ChatServer	 delete;
+	private ChatServer		 delete;
 	private Socket			 socket;
 	private PrintStream 	 to_client;
 	private BufferedReader 	 from_client;
 	private Chat_room 		 room;
 	private String			 userName;
 
-	SocketThread(Socket s, ChatServer chatServer)
-	{
-		this.delete = chatServer ;
+	SocketThread(Socket s, ChatServer chatServer){
+		this.delete = chatServer;
 		this.socket = s;
 
 		try {
@@ -27,15 +26,13 @@ class SocketThread extends Thread{
 		} catch (IOException e) {e.printStackTrace();}
 	}
 	
-	void sendRoomName(String i) {to_client.println("<<roomname$ "+i+" >>");}
+	void sendRoomName(String i) {			to_client.println("<<roomname$ "+i+" >>");		}
 	
-	void sendInfo(String i) {to_client.println("<<info$ "+i+" >>");}
+	void sendInfo(String i) {				to_client.println("<<info$ "+i+" >>");			}
 	
-	void sendInfo(String i,String type) {to_client.println("<<info,"+type+"$ "+i+" >>");}
+	void sendInfo(String i,String type) {	to_client.println("<<info,"+type+"$ "+i+" >>");	}
 	
-	void sendMessage(String msg){
-		to_client.println("<<msg$ "+msg+" >>");
-	}
+	void sendMessage(String msg){			to_client.println("<<msg$ "+msg+" >>");			}
 
 	@Override
 	public final void run() {
@@ -44,8 +41,9 @@ class SocketThread extends Thread{
 
 		catch (IOException e1) {
 			if( !(e1.getMessage()=="Connection reset") )
-				{ e1.printStackTrace();}}
-
+				 e1.printStackTrace();
+		}
+		
 		delete.release_resource(this);
 		
 		if(room!=null)			//this because if an user quits before entering a room 
@@ -73,9 +71,10 @@ class SocketThread extends Thread{
 			@Override
 			public void run() {
 				boolean test = true;
-				while (test)
-				{
+				
+				while (test){
 					String text = null;
+					
 					try {
 						text = from_client.readLine();
 					} catch (IOException e) {
@@ -88,8 +87,7 @@ class SocketThread extends Thread{
 						if(text.startsWith("/"))
 						{
 							String[] parameter = text.split(" ");
-
-							
+						
 							switch (parameter[0]) {
 
 								case "/help":

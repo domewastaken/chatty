@@ -15,7 +15,7 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class ChatWindow{
+public class ClientGui{
 
 	private JFrame frame;
 	private JPanel pane;
@@ -29,7 +29,16 @@ public class ChatWindow{
 	private JLabel lblNewLabel;
 	private JLabel room_label;
 
-	public ChatWindow() {
+	public ClientGui() {
+		// Set System L&F
+			try {
+				UIManager.setLookAndFeel(
+				    UIManager.getSystemLookAndFeelClassName());
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+					| UnsupportedLookAndFeelException e) {
+
+			}
+	
 		initialize();
 	}
 
@@ -126,21 +135,40 @@ public class ChatWindow{
 	}
 	public WindowPrinter getPrinter() {
 		
-		return (String message,ContentType type)-> 
-		{
-			if(type == ContentType.Chat_message) {
-				try {
-					document.insertString(document.getEndPosition().getOffset() -1 ,message+"\n", StyleType.MESSAGE_STYLE.getStyle() );
-				} catch (BadLocationException e) {
-					e.printStackTrace();
-			}}else if(type == ContentType.Chat_info) {
-					
+		return (String message,ContentType type)-> {
+			
+			switch(type) {
+				
+				case Chat_message:
+					try {
+						document.insertString(document.getEndPosition().getOffset() -1 ,message+"\n", StyleType.MESSAGE_STYLE.getStyle() );
+					} catch (BadLocationException e) {
+						e.printStackTrace();
+					}
+				break;	
+				
+				case Chat_info: 
 					try {
 						document.insertString(document.getEndPosition().getOffset() -1 ,message+"\n", StyleType.INFO_STYLE.getStyle() );
-				} catch (BadLocationException e) {
-					e.printStackTrace(); 
-			}}else if(type == ContentType.Room_name) {
+					} catch (BadLocationException e) {
+						e.printStackTrace(); 
+					}
+				break;
+					
+				case Room_name:
 					room_label.setText(message);
+				break;
+					
+				case Error:
+					try {
+						document.insertString(document.getEndPosition().getOffset() -1 ,message+"\n", StyleType.ERROR_STYLE.getStyle() );
+					} catch (BadLocationException e) {
+						e.printStackTrace(); 
+					}
+				break;
+				
+				default:
+				break;
 			}
 		};
 	}

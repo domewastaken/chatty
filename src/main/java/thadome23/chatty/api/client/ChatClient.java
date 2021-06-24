@@ -7,99 +7,56 @@ import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.rmi.ConnectException;
 
 
 public class ChatClient {
-	private Buffer inputBuffer;
-	private Socket socket;
+	private Buffer inputBuffer;		
 	private WindowPrinter userOutput;
+	private Socket socket;	
+	
+	/**************** Constructor ***************/
+	public ChatClient(WindowPrinter printer, Buffer buff){
 
-	private InetAddress ip;
-	private int port;			// normally is 8080 
-
-
-	//**************************start of constructors************************************************
-	public ChatClient(int port, WindowPrinter printer ,Buffer buff, InetAddress ip){
-
-		this.port = port;
-		this.ip = ip;
 		this.userOutput = printer;
-		this.inputBuffer=buff;
-		
-		connect();
+		this.inputBuffer=buff;	
 	}
 	
-	public ChatClient(int port, WindowPrinter printer, Buffer buff){
+	/**************** Public Method*******************/
 
-		this.port = port;
-		this.userOutput = printer;
-		this.inputBuffer=buff;
-	
-		userOutput.println("enter the address",ContentType.Chat_message);
-		
-		boolean flag ;
-
-		do{
-			flag = false;
-		
-			try {
-				String addr = inputBuffer.getString();
-					
-				this.ip = parseStringToAddress(addr);
-					
-				}catch (ArrayIndexOutOfBoundsException | UnknownHostException | NumberFormatException e1) {
-					userOutput.println("---You must enter a valid Ip Address---",ContentType.Chat_message);	
-					flag = true;
-					
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-			}
-		
-		}while(flag);
-
-		connect();
-	}
-	//**************************end of constructors************************************************
-	
-	private void connect()
-	{
-		boolean test = true;
-		
-		try {
-			socket = new Socket(ip, port); 	//connects to the server
-		} catch (IOException e1) {
-			test=false;
-			userOutput.println("---errors during connection---",ContentType.Chat_message);	
-		} 	
-		
-		if (test) {
-				userOutput.println("connected to " + ip.getHostAddress(),ContentType.Chat_message);
-			
-			try {															
-				InputThread tr1=new InputThread(new BufferedReader(new InputStreamReader(socket.getInputStream())),userOutput);		
-				OutputThread tr2 = new OutputThread(new PrintStream(socket.getOutputStream()),inputBuffer);		//	initializes I/O	
+	public void connect(InetAddress ip, int port) throws ConnectException{	
 				
-				tr1.start();
-				tr2.start();
-	
-				tr1.join();
-				tr2.join();
-	
-			} catch (IOException | InterruptedException e) {  e.printStackTrace();} 
-			
+		try {  socket = new Socket(ip, port);  }
+		catch (IOException e1) {
+			throw new ConnectException("server didn't accept connection");
 		}
+
+		userOutput.println("connected to " + ip.getHostAddress(),ContentType.Chat_message);
+		
+		try {															
+			InputThread tr1=new InputThread(new BufferedReader(new InputStreamReader(socket.getInputStream())),userOutput);		
+			OutputThread tr2 = new OutputThread(new PrintStream(socket.getOutputStream()),inputBuffer);		//	initializes I/O	
+			
+			tr1.start();
+			tr2.start();
+
+			tr1.join();
+			tr2.join();
+	
+		} catch (IOException | InterruptedException e) {  e.printStackTrace();}
 	}
-
-
+	
+	/******************* Getters **************************/
 	public String getAddress() {
-		return ip.getHostAddress();
+		return socket.getLocalAddress().getHostAddress();
 	}
 
 	public int getPort(){
-		return port;
+		return socket.getPort();
 	}
 	
-	public static InetAddress parseStringToAddress(String address) throws UnknownHostException,ArrayIndexOutOfBoundsException{
+	/****************** Static Method *******************/
+	public static InetAddress parseStringToAddress(String address) throws UnknownHostException,ArrayIndexOutOfBoundsException, NumberFormatException {
 
         return InetAddress.getByAddress( new byte[]{ (byte) Integer.parseInt( address.split("\\.")[0]),
                                                      (byte) Integer.parseInt( address.split("\\.")[1]),

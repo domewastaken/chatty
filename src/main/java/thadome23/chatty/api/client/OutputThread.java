@@ -6,14 +6,11 @@ class OutputThread extends Thread {
 	private PrintStream stream;
 	private boolean test = true;
 	private Buffer userInput;
-	//private WindowPrinter p;
-	//private String username;
-	
-	public OutputThread(PrintStream c, Buffer buffer/*, String username,WindowPrinter p*/){
+
+	public OutputThread(PrintStream c, Buffer buffer){
 		this.stream=c;
 		this.userInput=buffer;
-		//this.username=username;
-		//this.p =p;
+
 	}
 
 	@Override
@@ -29,7 +26,7 @@ class OutputThread extends Thread {
 				} catch (InterruptedException e) {  e.printStackTrace();  }	
 			}
 	
-			textReplaced= text.replaceAll("_","/_");
+			textReplaced = text.replaceAll("_","/_");
 			textReplaced = textReplaced.replaceAll("<","/<");
 			textReplaced = textReplaced.replaceAll(">","/>");
 				

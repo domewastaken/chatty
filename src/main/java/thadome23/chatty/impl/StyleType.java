@@ -8,7 +8,7 @@ import javax.swing.text.StyleContext;
 
 enum StyleType {
 	MESSAGE_STYLE("message",Color.BLACK),
-	INFO_STYLE("info",Color.GREEN),
+	INFO_STYLE("info",new Color(128,128,128)),
 	ERROR_STYLE("error",Color.RED);
 	
 	private static class init { static StyleContext context = new StyleContext();}

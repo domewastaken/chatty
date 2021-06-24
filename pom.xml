@@ -27,7 +27,7 @@
           
           <execution>
             <id>client</id>
-            <goals><goal>jar</goal></goals>
+            <goals> <goal>jar</goal> </goals>
             <phase>package</phase>
             <configuration>
               <classifier>client</classifier>
@@ -41,20 +41,16 @@
          
           <execution>
             <id>server</id>
-            <goals><goal>jar</goal></goals>
+            <goals> <goal>jar</goal> </goals>
             <phase>package</phase>
             <configuration>
-              <classifier>server</classifier>
-             	 
-             
+             <classifier>server</classifier>
               <archive>
                <manifest>
 			  		<mainClass>thadome23.chatty.impl.Server_app</mainClass>
-			  	</manifest>
+			  </manifest>
            	 </archive>
-         
             </configuration>
-          
           </execution>
         </executions>
      

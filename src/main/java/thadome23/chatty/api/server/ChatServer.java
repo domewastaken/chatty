@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ChatServer {
 
@@ -16,7 +15,6 @@ public class ChatServer {
 	private int connections_alive = 0;            //the currents connections alive
 
 
-	/****************************constructors start*********************************************/
 	public ChatServer(int maxservers){
 
 		this(maxservers,8080);
@@ -28,6 +26,10 @@ public class ChatServer {
 		this.maxServers = maxservers;                  /*Initialization of fields*/
 		this.sockets = new ArrayList<>();
 
+	}
+	
+	public void start() {
+		
 		try {  server= new ServerSocket(port);  }
 		catch (IOException e)
         {
@@ -38,10 +40,6 @@ public class ChatServer {
 		
 		if(run)
 			System.out.println("server bind to port: "+ port);
-	}
-	/****************************constructors end***********************************************/
-
-	public void start() {
 		
 		while (run) {
 			
@@ -74,10 +72,11 @@ public class ChatServer {
 
 	}
 
-	@SuppressWarnings("resource")
+
 	public void close() {
 		run = false;
-		new Scanner(System.in).nextLine();
+		System.out.println("server closed");
+
 	}
 
 	public int getPort() {
