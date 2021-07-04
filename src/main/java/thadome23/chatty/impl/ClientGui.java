@@ -48,7 +48,7 @@ public class ClientGui{
 	private void initialize() {
 		frame = new JFrame();
 		frame.setTitle("Java");
-		frame.setBounds(100, 100, 300, 314);
+		frame.setBounds(100, 100, 800, 450);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		pane=(JPanel)frame.getContentPane();
