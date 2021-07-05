@@ -1,6 +1,5 @@
 package thadome23.chatty.impl;
 
-import java.net.UnknownHostException;
 import java.rmi.ConnectException;
 
 import thadome23.chatty.api.client.*;
