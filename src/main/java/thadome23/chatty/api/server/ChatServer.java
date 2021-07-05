@@ -13,7 +13,7 @@ public class ChatServer {
 	private List<SocketThread> sockets;            //the sockets
 	private boolean run = false;
 	private int connections_alive = 0;            //the currents connections alive
-
+	private LogGui logger;
 
 	public ChatServer(int maxservers){
 
@@ -25,6 +25,7 @@ public class ChatServer {
 		this.port = port;
 		this.maxServers = maxservers;                  /*Initialization of fields*/
 		this.sockets = new ArrayList<>(maxservers);
+		this.logger = new LogGui();
 
 	}
 	
@@ -35,13 +36,14 @@ public class ChatServer {
 		try {  server= new ServerSocket(port);  }
 		catch (IOException e)
         {
-            System.out.println("cannot bind to the specified port");
-            System.out.println(e.getMessage());
+            logger.write("cannot bind to the specified port");
+            logger.write(e.getMessage());
             close();
+            
 		}
 		
 		if(run)
-			System.out.println("server bind to port: "+ port);
+			logger.write("server bind to port: "+ port);
 		
 		while (run) {
 			
@@ -52,10 +54,10 @@ public class ChatServer {
 					SocketThread s = new SocketThread(server.accept(), this);   //<<-------- //it passes also the current instance
 					s.start();                                                           	 //for make possible to delete the connection
 					sockets.add(s);            //add the current connection to the list		 //with @method release_resource
-					System.out.println("connected to " + s.getStringClientIp());
+					logger.write("connected to " + s.getStringClientIp());
 				
 				} catch (IOException e) {
-					System.out.println("error connecting to client");
+					logger.write("error connecting to client");
 				}
 
 				synchronized (this) {
@@ -63,12 +65,14 @@ public class ChatServer {
 				}
 			}
 		}
+
 	
 	}
 
 	public synchronized void release_resource(SocketThread thread) {
 		thread.closeConnection();
-		System.out.println("closed connection with " + thread.getStringClientIp());
+		logger.write("closed connection with " + thread.getStringClientIp());
+
 		sockets.remove(thread);
 		synchronized (this) {
 			connections_alive--;
@@ -81,17 +85,22 @@ public class ChatServer {
 		run = false;
 		int a = connections_alive;
 		
-		for(int i = 0; i<a-1; i++) {
+		/*for(int i = 0; i<a-1; i++) {
 			release_resource(sockets.get(0));
 		}
+		*/
+		sockets.forEach((SocketThread s)->{
+			release_resource(s);
+			});
 		
 		try {
-			server.close();
+			if(server != null)
+				server.close();
 		} catch (IOException e) {
 			
-			System.out.println("error 123");
+			logger.write("error 123");
 		}
-		System.out.println("server closed");
+		logger.write("server closed");
 	}
 	
 	public void destroy() {
@@ -109,6 +118,10 @@ public class ChatServer {
 	
 	public void setPort(int p) {
 		this.port = p;
+	}
+	
+	public LogGui getLog() {
+		return logger;
 	}
 
 }

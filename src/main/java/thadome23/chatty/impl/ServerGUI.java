@@ -36,7 +36,7 @@ public class ServerGUI {
 	private JTextField textField;
 	private JMenuBar menuBar;
 	private JMenu mnNewMenu;
-	private JMenuItem mntmNewMenuItem;
+	private JMenuItem logsM;
 	/**
 	 * Create the application.
 	 */
@@ -145,9 +145,9 @@ public class ServerGUI {
 		mnNewMenu = new JMenu("help");
 		menuBar.add(mnNewMenu);
 		
-		mntmNewMenuItem = new JMenuItem("logs");
-		mntmNewMenuItem.setBackground(SystemColor.activeCaptionBorder);
-		mnNewMenu.add(mntmNewMenuItem);
+		logsM = new JMenuItem("logs");
+		logsM.setBackground(SystemColor.activeCaptionBorder);
+		mnNewMenu.add(logsM);
 		addListeners();
 		frm.setVisible(true);
 	}
@@ -160,14 +160,24 @@ public class ServerGUI {
 				public void actionPerformed(ActionEvent e) {
 					server.setPort(Integer.parseInt(port.getText()));
 					startS();
-					status.setText("online"); 
-					startBtn.setEnabled(false);
-					stopBtn.setEnabled(true);
-					
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					if(server.isOnline()) {
+						status.setText("online"); 
+						startBtn.setEnabled(false);
+						stopBtn.setEnabled(true);
+					}
 				}
 
 				
 			});
+		
+		logsM.addActionListener( (e)-> {server.getLog().setVisible(true);});
+		
 		stopBtn.addActionListener(new ActionListener() {
 			
 			@Override
