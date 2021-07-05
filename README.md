@@ -10,7 +10,7 @@ or an improvement to this repository.
 Thanks for reading
 
 <h1>Relase notes</h1>
-<h3>---v1.1-alpha first pre-release---</h3>
+<h3>---v1.1-alpha--</h3>
 >>Lots of things to discover
 
 <h3>---v0.1 first pre-release---</h3>
