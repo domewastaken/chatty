@@ -28,6 +28,9 @@ public class ClientGui{
 	private JPanel panel;
 	private JLabel lblNewLabel;
 	private JLabel room_label;
+	private JMenuBar menuBar;
+	private JMenu mnNewMenu;
+	private JMenuItem mntmNewMenuItem;
 
 	public ClientGui() {
 		// Set System L&F
@@ -47,14 +50,15 @@ public class ClientGui{
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setBackground(SystemColor.scrollbar);
 		frame.setTitle("Java");
-		frame.setBounds(100, 100, 300, 314);
+		frame.setBounds(100, 100, 324, 338);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		pane=(JPanel)frame.getContentPane();
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 30, 30, 50, 30, 30, 30, 0, 0};
+		gridBagLayout.columnWidths = new int[] {10, 0, 10};
+		gridBagLayout.rowHeights = new int[] {0, 30, 30, 50, 30, 30, 30, 0, 10};
 		gridBagLayout.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 
@@ -73,7 +77,7 @@ public class ClientGui{
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.anchor = GridBagConstraints.NORTHWEST;
 		gbc_panel.gridwidth = 2;
-		gbc_panel.insets = new Insets(5, 5, 3, 5);
+		gbc_panel.insets = new Insets(5, 5, 5, 0);
 		gbc_panel.gridx = 0;
 		gbc_panel.gridy = 0;
 		frame.getContentPane().add(panel, gbc_panel);
@@ -90,26 +94,35 @@ public class ClientGui{
 		gbc_scrollpane.gridheight = 6;
 		gbc_scrollpane.gridwidth = 2;
 		gbc_scrollpane.fill = GridBagConstraints.BOTH;
-		gbc_scrollpane.insets = new Insets(5, 5, 5, 5);
+		gbc_scrollpane.insets = new Insets(5, 5, 5, 0);
 		gbc_scrollpane.gridx = 0;
 		gbc_scrollpane.gridy = 1;
 		pane.add(scrollpane, gbc_scrollpane);
 
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
-		gbc_btnSubmit.insets = new Insets(5, 0, 5, 5);
+		gbc_btnSubmit.insets = new Insets(5, 0, 0, 0);
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSubmit.gridx = 1;
 		gbc_btnSubmit.gridy = 7;
 		pane.add(btnSubmit, gbc_btnSubmit);
 
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(5, 5, 5, 5);
+		gbc_textField.insets = new Insets(5, 5, 0, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridx = 0;
 		gbc_textField.gridy = 7;
 		pane.add(textField, gbc_textField);
 		
 		textField.setColumns(10);
+		
+		menuBar = new JMenuBar();
+		frame.setJMenuBar(menuBar);
+		
+		mnNewMenu = new JMenu("help");
+		menuBar.add(mnNewMenu);
+		
+		mntmNewMenuItem = new JMenuItem("?");
+		mnNewMenu.add(mntmNewMenuItem);
 
 		btnSubmit.addActionListener(e -> {
 			//this is lambda

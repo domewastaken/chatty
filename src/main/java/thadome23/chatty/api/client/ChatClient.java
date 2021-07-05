@@ -24,14 +24,14 @@ public class ChatClient {
 	
 	/**************** Public Method*******************/
 
-	public void connect(InetAddress ip, int port) throws ConnectException{	
+	public int connect(String string, int port) throws ConnectException{	
 				
-		try {  socket = new Socket(ip, port);  }
+		try {  socket = new Socket(string, port);  }
 		catch (IOException e1) {
 			throw new ConnectException("server didn't accept connection");
 		}
 
-		userOutput.println("connected to " + ip.getHostAddress(),ContentType.Chat_message);
+		userOutput.println("connected to " + string,ContentType.Chat_message);
 		
 		try {															
 			InputThread tr1=new InputThread(new BufferedReader(new InputStreamReader(socket.getInputStream())),userOutput);		
@@ -40,10 +40,8 @@ public class ChatClient {
 			tr1.start();
 			tr2.start();
 
-			tr1.join();
-			tr2.join();
-	
-		} catch (IOException | InterruptedException e) {  e.printStackTrace();}
+		} catch (IOException e) {  e.printStackTrace();}
+		return 0;
 	}
 	
 	/******************* Getters **************************/

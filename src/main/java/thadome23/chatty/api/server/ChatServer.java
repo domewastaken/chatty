@@ -81,8 +81,8 @@ public class ChatServer {
 		run = false;
 		int a = connections_alive;
 		
-		for(int i = 0; i<a; i++) {
-			release_resource(sockets.get(i));
+		for(int i = 0; i<a-1; i++) {
+			release_resource(sockets.get(0));
 		}
 		
 		try {
@@ -105,6 +105,10 @@ public class ChatServer {
 
 	public int getPort() {
 		return port;
+	}
+	
+	public void setPort(int p) {
+		this.port = p;
 	}
 
 }

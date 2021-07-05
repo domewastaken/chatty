@@ -14,17 +14,29 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.JButton;
+import javax.swing.JSpinner;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.SystemColor;
 
 public class ServerGUI {
 
-	private JFrame		frame;
+	private JFrame		frm;
 	private Thread  	app;
 	private ChatServer 	server;
 	private JTextField 	port;
 	private JLabel 		status;
 	private JButton 	startBtn ;
 	private JButton		stopBtn;
+	private JLabel lblNewLabel;
+	private JTextField textField;
+	private JMenuBar menuBar;
+	private JMenu mnNewMenu;
+	private JMenuItem mntmNewMenuItem;
 	/**
 	 * Create the application.
 	 */
@@ -32,6 +44,13 @@ public class ServerGUI {
 		
 		server = c;
 		
+		try {
+			UIManager.setLookAndFeel(
+			    UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+
+		}
 		initialize();
 	}
 
@@ -39,42 +58,60 @@ public class ServerGUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 259, 190);
-		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frm = new JFrame();
+		frm.setForeground(SystemColor.infoText);
+		frm.setTitle("chatty");
+		frm.setBounds(100, 100, 278, 254);
+		frm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 22, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		frame.getContentPane().setLayout(gridBagLayout);
+		gridBagLayout.columnWidths = new int[] {30, 10, 0, 30, 10};
+		gridBagLayout.rowHeights = new int[] {30, 10, 0, 22, 30, 0, 10};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		frm.getContentPane().setLayout(gridBagLayout);
 		
-		JLabel label1 = new JLabel("Server port:");
+		JLabel label1 = new JLabel("Text server port:");
 		GridBagConstraints gbc_label1 = new GridBagConstraints();
 		gbc_label1.anchor = GridBagConstraints.EAST;
 		gbc_label1.insets = new Insets(0, 0, 5, 5);
 		gbc_label1.gridx = 1;
 		gbc_label1.gridy = 1;
-		frame.getContentPane().add(label1, gbc_label1);
+		frm.getContentPane().add(label1, gbc_label1);
 		
-		port = new JTextField(String.valueOf(server.getPort()));
-		port.setEditable(false);
+		port = new JTextField("8080");
 		GridBagConstraints gbc_port = new GridBagConstraints();
 		gbc_port.insets = new Insets(0, 0, 5, 5);
 		gbc_port.fill = GridBagConstraints.HORIZONTAL;
 		gbc_port.gridx = 2;
 		gbc_port.gridy = 1;
-		frame.getContentPane().add(port, gbc_port);
+		frm.getContentPane().add(port, gbc_port);
 		port.setColumns(10);
+		
+		lblNewLabel = new JLabel("Audio server port");
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 1;
+		gbc_lblNewLabel.gridy = 2;
+		frm.getContentPane().add(lblNewLabel, gbc_lblNewLabel);
+		
+		textField = new JTextField();
+		textField.setText("8081");
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.insets = new Insets(0, 0, 5, 5);
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 2;
+		gbc_textField.gridy = 2;
+		frm.getContentPane().add(textField, gbc_textField);
+		textField.setColumns(10);
 		
 		JLabel label2 = new JLabel("Server status: ");
 		GridBagConstraints gbc_label2 = new GridBagConstraints();
 		gbc_label2.anchor = GridBagConstraints.EAST;
 		gbc_label2.insets = new Insets(0, 0, 5, 5);
 		gbc_label2.gridx = 1;
-		gbc_label2.gridy = 2;
-		frame.getContentPane().add(label2, gbc_label2);
+		gbc_label2.gridy = 3;
+		frm.getContentPane().add(label2, gbc_label2);
 		
 		status = new JLabel("offline");
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -82,27 +119,37 @@ public class ServerGUI {
 		gbc_lblNewLabel_1.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_1.gridx = 2;
-		gbc_lblNewLabel_1.gridy = 2;
-		frame.getContentPane().add(status, gbc_lblNewLabel_1);
+		gbc_lblNewLabel_1.gridy = 3;
+		frm.getContentPane().add(status, gbc_lblNewLabel_1);
 		
 		startBtn = new JButton("Start");
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 4;
-		frame.getContentPane().add(startBtn, gbc_btnNewButton);
+		gbc_btnNewButton.gridy = 5;
+		frm.getContentPane().add(startBtn, gbc_btnNewButton);
 		
 		stopBtn = new JButton("Stop");
 		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
 		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_1.gridx = 2;
-		gbc_btnNewButton_1.gridy = 4;
-		frame.getContentPane().add(stopBtn, gbc_btnNewButton_1);
+		gbc_btnNewButton_1.gridy = 5;
+		frm.getContentPane().add(stopBtn, gbc_btnNewButton_1);
 		stopBtn.setEnabled(false);
+		
+		menuBar = new JMenuBar();
+		frm.setJMenuBar(menuBar);
+		
+		mnNewMenu = new JMenu("help");
+		menuBar.add(mnNewMenu);
+		
+		mntmNewMenuItem = new JMenuItem("logs");
+		mntmNewMenuItem.setBackground(SystemColor.activeCaptionBorder);
+		mnNewMenu.add(mntmNewMenuItem);
 		addListeners();
-		frame.setVisible(true);
+		frm.setVisible(true);
 	}
 	
 	private void addListeners() {
@@ -111,6 +158,7 @@ public class ServerGUI {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					server.setPort(Integer.parseInt(port.getText()));
 					startS();
 					status.setText("online"); 
 					startBtn.setEnabled(false);
@@ -137,7 +185,7 @@ public class ServerGUI {
 		
 		});
 		
-		frame.addWindowListener(new WindowListener() {
+		frm.addWindowListener(new WindowListener() {
 			
 			@Override
 			public void windowOpened(WindowEvent e) {}

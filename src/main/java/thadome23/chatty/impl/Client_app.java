@@ -15,38 +15,34 @@ public class Client_app {
 		
 		Buffer buff = gui.getBuffer();		
 		
-		
 		ChatClient client = new ChatClient(print,buff);	
 		
-		askAndConnect(print,buff,client);
+		askAndConnect(buff,print,client);
 	
 	}		
 		
-	private static void askAndConnect(WindowPrinter print, Buffer buff, ChatClient client) {
-		String addr;							
+	private static void askAndConnect(Buffer buff,WindowPrinter print , ChatClient client) {
+
 		boolean error;
 		
+		ConnectGui cg = new ConnectGui();
+		
 		do {
-			print.println("enter Ip Address", ContentType.Chat_message);
-				
 			error = false;
 				
 			try {
-				addr = buff.getString();
-				print.println(">"+ addr, ContentType.Chat_message);
 				
-				client.connect( ChatClient.parseStringToAddress(addr) , 8080);
+				client.connect(cg.getIp() , cg.getPort());
 					
-			} catch (ConnectException | ArrayIndexOutOfBoundsException | NumberFormatException | UnknownHostException e) {
+			} catch (ConnectException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
 					
 				print.println("invalid ip address", ContentType.Error);
 				error = true;
 				
-			} catch (InterruptedException e) {
-		
-				e.printStackTrace();
-			}
+			} 
 		}while(error);
+		buff.add(cg.getNick());
+		cg.close();
 	}
 	
 }
