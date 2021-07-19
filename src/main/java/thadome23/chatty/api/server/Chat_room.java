@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 class Chat_room {
 
 	private String room_name;
-	private List<SocketThread> users;
+	private List<ChatUser> users;
 	private int max;
 
 	private static List<Chat_room> roomsRegistry = new ArrayList<>();   //this is static!!
@@ -32,24 +32,24 @@ class Chat_room {
 		this.room_name = room_name;
 	}
 
-	synchronized boolean joinRoom(SocketThread c) {
-	if(this.activeUsers()<max){
-		serverMessage(""+c.getUsername()+" joined the chat") ;
-		users.add(c);
-
-		return true;
-	}else{
-		return false;
+	synchronized boolean joinRoom(ChatUser c) {
+		
+		if(activeUsers() < max) {
+			serverMessage(""+c.getUsername()+" joined the chat") ;
+			users.add(c);
+			return true;
+			
+		}else{
+			return false;
+		}
 	}
-}
 
 	private void serverMessage(String text) {
-		users.forEach((SocketThread s) -> s.sendMessage(text));
-
+		users.forEach((ChatUser s) -> s.sendMessage(text));
 	}
 
 	void textMessage(String msg, String username) {
-		users.forEach((SocketThread s) -> s.sendMessage("[" + username + "]: " + msg));
+		users.forEach((ChatUser s) -> s.sendMessage("[" + username + "]: " + msg));
 	}
 
 	private static boolean addRoom( Chat_room c) {
@@ -77,7 +77,7 @@ class Chat_room {
 		return null;
 	}
 
-	void deleteUser(SocketThread socketThread) {
+	void deleteUser(ChatUser socketThread) {
 		users.remove(socketThread);
 		serverMessage("" + socketThread.getUsername() + " left the chat");
 		if (users.isEmpty())

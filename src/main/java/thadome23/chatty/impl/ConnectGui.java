@@ -15,6 +15,7 @@ import java.awt.Font;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import javax.swing.JCheckBox;
 
 public class ConnectGui {
 	private JFrame frame;
@@ -23,10 +24,11 @@ public class ConnectGui {
 	private JTextField ip_T;
 	private JTextField port_T;
 	
-	private String nick = "";
-	private String ip = "";
-	private int port = 0;
-	
+	private String nick;
+	private String ip;
+	private int port;
+	private JCheckBox HackMode;
+	private boolean ready = false;
 	
 
 	public ConnectGui() {
@@ -42,10 +44,7 @@ public class ConnectGui {
 		initialize();
 	}
 
-	/**
-	 * Create the frame.
-	 * @return 
-	 */
+
 	public void initialize() {
 		
 		frame = new JFrame();
@@ -84,14 +83,19 @@ public class ConnectGui {
 		contentPane.add(port_T);
 		port_T.setColumns(10);
 		
+		HackMode = new JCheckBox("sneak mode");
+		contentPane.add(HackMode);
+		
 		JButton connect = new JButton("Connect");
 		contentPane.add(connect);
 		
 		frame.setVisible(true);
+		
 		connect.addActionListener(e -> {
 			nick = nick_T.getText();
 			ip = ip_T.getText();
 			port = Integer.parseInt(port_T.getText());
+			
 			synchronized (this) {
 				notifyAll();
 			}
@@ -101,11 +105,10 @@ public class ConnectGui {
 	
 	public synchronized String getIp() {
 		while(true) {
-			if(ip != "" ) {
-				String temp = ip;
-				ip= "";
-				return temp;
-			}
+			
+			if(ip != "" ) 
+				return ip;
+			
 			else {
 				try {
 					wait();
@@ -118,12 +121,10 @@ public class ConnectGui {
 	
 	public synchronized int getPort() {
 		while(true) {
+			
 			if(port != 0 )
-			{
-				int temp = port;
-				port= 0;
-				return temp;
-			}
+				return port;
+			
 			else {
 				try {
 					wait();
@@ -136,11 +137,10 @@ public class ConnectGui {
 	
 	public synchronized String getNick() {
 		while(true) {
-			if(nick != "" ){
-				String temp = nick;
-				nick= "";
-				return temp;
-			}
+			
+			if(nick != "" )	
+				return nick;
+			
 			else {
 				try {
 					wait();

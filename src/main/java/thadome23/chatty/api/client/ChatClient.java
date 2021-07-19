@@ -31,7 +31,7 @@ public class ChatClient {
 			throw new ConnectException("server didn't accept connection");
 		}
 
-		userOutput.println("connected to " + string,ContentType.Chat_message);
+		userOutput.println("connected to " + socket.getInetAddress(),ContentType.Chat_message);
 		
 		try {															
 			InputThread tr1=new InputThread(new BufferedReader(new InputStreamReader(socket.getInputStream())),userOutput);		

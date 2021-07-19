@@ -32,8 +32,6 @@ public class ServerGUI {
 	private JLabel 		status;
 	private JButton 	startBtn ;
 	private JButton		stopBtn;
-	private JLabel lblNewLabel;
-	private JTextField textField;
 	private JMenuBar menuBar;
 	private JMenu mnNewMenu;
 	private JMenuItem logsM;
@@ -61,13 +59,13 @@ public class ServerGUI {
 		frm = new JFrame();
 		frm.setForeground(SystemColor.infoText);
 		frm.setTitle("chatty");
-		frm.setBounds(100, 100, 278, 254);
+		frm.setBounds(100, 100, 268, 208);
 		frm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 10, 0, 30, 10};
-		gridBagLayout.rowHeights = new int[] {30, 10, 0, 22, 30, 0, 10};
+		gridBagLayout.rowHeights = new int[] {30, 10, 22, 30, 0, 10};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		frm.getContentPane().setLayout(gridBagLayout);
 		
 		JLabel label1 = new JLabel("Text server port:");
@@ -87,30 +85,12 @@ public class ServerGUI {
 		frm.getContentPane().add(port, gbc_port);
 		port.setColumns(10);
 		
-		lblNewLabel = new JLabel("Audio server port");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 2;
-		frm.getContentPane().add(lblNewLabel, gbc_lblNewLabel);
-		
-		textField = new JTextField();
-		textField.setText("8081");
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 2;
-		frm.getContentPane().add(textField, gbc_textField);
-		textField.setColumns(10);
-		
 		JLabel label2 = new JLabel("Server status: ");
 		GridBagConstraints gbc_label2 = new GridBagConstraints();
 		gbc_label2.anchor = GridBagConstraints.EAST;
 		gbc_label2.insets = new Insets(0, 0, 5, 5);
 		gbc_label2.gridx = 1;
-		gbc_label2.gridy = 3;
+		gbc_label2.gridy = 2;
 		frm.getContentPane().add(label2, gbc_label2);
 		
 		status = new JLabel("offline");
@@ -119,7 +99,7 @@ public class ServerGUI {
 		gbc_lblNewLabel_1.fill = GridBagConstraints.VERTICAL;
 		gbc_lblNewLabel_1.anchor = GridBagConstraints.WEST;
 		gbc_lblNewLabel_1.gridx = 2;
-		gbc_lblNewLabel_1.gridy = 3;
+		gbc_lblNewLabel_1.gridy = 2;
 		frm.getContentPane().add(status, gbc_lblNewLabel_1);
 		
 		startBtn = new JButton("Start");
@@ -127,7 +107,7 @@ public class ServerGUI {
 		gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 5;
+		gbc_btnNewButton.gridy = 4;
 		frm.getContentPane().add(startBtn, gbc_btnNewButton);
 		
 		stopBtn = new JButton("Stop");
@@ -135,7 +115,7 @@ public class ServerGUI {
 		gbc_btnNewButton_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_1.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewButton_1.gridx = 2;
-		gbc_btnNewButton_1.gridy = 5;
+		gbc_btnNewButton_1.gridy = 4;
 		frm.getContentPane().add(stopBtn, gbc_btnNewButton_1);
 		stopBtn.setEnabled(false);
 		

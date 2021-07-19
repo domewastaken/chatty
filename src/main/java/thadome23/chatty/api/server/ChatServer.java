@@ -10,9 +10,9 @@ public class ChatServer {
 	private ServerSocket server;                //this accept all the requests
 	private int port;                            //the port of the server
 	private int maxServers;                    //the maximum numbers of servers(connections) that can hold
-	private List<SocketThread> sockets;            //the sockets
+	private List<ChatUser> sockets;            //the sockets
 	private boolean run = false;
-	private int connections_alive = 0;            //the currents connections alive
+
 	private LogGui logger;
 
 	public ChatServer(int maxservers){
@@ -30,7 +30,7 @@ public class ChatServer {
 	}
 	
 	public void start() {
-		
+		logger.write("server started");
 		run = true;
 		
 		try {  server= new ServerSocket(port);  }
@@ -47,51 +47,43 @@ public class ChatServer {
 		
 		while (run) {
 			
-			if (connections_alive < maxServers) {
+			if (sockets.size() <= maxServers) {
 
 				try {
 
-					SocketThread s = new SocketThread(server.accept(), this);   //<<-------- //it passes also the current instance
+					ChatUser s = new ChatUser(server.accept(), this);   //<<-------- //it passes also the current instance
 					s.start();                                                           	 //for make possible to delete the connection
 					sockets.add(s);            //add the current connection to the list		 //with @method release_resource
-					logger.write("connected to " + s.getStringClientIp());
+					logger.write("connected to client on" + s.getStringClientIp()+":"+s.getPort());
 				
 				} catch (IOException e) {
 					logger.write("error connecting to client");
 				}
 
-				synchronized (this) {
-					connections_alive++;
-				}
 			}
 		}
 
 	
 	}
 
-	public synchronized void release_resource(SocketThread thread) {
+	public synchronized void disconnect(ChatUser thread) {
 		thread.closeConnection();
-		logger.write("closed connection with " + thread.getStringClientIp());
-
+		logger.write("closed connection with " + thread.getStringClientIp() +":"+thread.getPort());
 		sockets.remove(thread);
-		synchronized (this) {
-			connections_alive--;
-		}
 
 	}
 
 
 	public void close() {
 		run = false;
-		int a = connections_alive;
 		
-		/*for(int i = 0; i<a-1; i++) {
-			release_resource(sockets.get(0));
+		synchronized (sockets) {
+			sockets.forEach( (s)->{
+				s.closeConnection();
+				logger.write("closed connection with " + s.getStringClientIp() +":"+s.getPort());
+				} );
 		}
-		*/
-		sockets.forEach((SocketThread s)->{
-			release_resource(s);
-			});
+		sockets.clear();
 		
 		try {
 			if(server != null)
