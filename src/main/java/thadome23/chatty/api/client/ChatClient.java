@@ -1,8 +1,6 @@
 package thadome23.chatty.api.client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -34,7 +32,7 @@ public class ChatClient {
 		userOutput.println("connected to " + socket.getInetAddress(),ContentType.Chat_message);
 		
 		try {															
-			InputThread tr1=new InputThread(new BufferedReader(new InputStreamReader(socket.getInputStream())),userOutput);		
+			InputThread tr1=new InputThread(socket,userOutput);		
 			OutputThread tr2 = new OutputThread(new PrintStream(socket.getOutputStream()),inputBuffer);		//	initializes I/O	
 			
 			tr1.start();

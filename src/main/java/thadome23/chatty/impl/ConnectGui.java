@@ -14,8 +14,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.Font;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JCheckBox;
+import java.awt.Window.Type;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class ConnectGui {
 	private JFrame frame;
@@ -32,14 +36,14 @@ public class ConnectGui {
 	
 
 	public ConnectGui() {
-		
+		/*
 		try {
 			UIManager.setLookAndFeel(
 			    UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 
-		}
+		}*/
 		
 		initialize();
 	}
@@ -48,19 +52,15 @@ public class ConnectGui {
 	public void initialize() {
 		
 		frame = new JFrame();
+		
 		frame.setTitle("Client connection");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(100, 100, 345, 310);
+		frame.setMinimumSize(new Dimension(300, 300));
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		frame.setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(0, 1, 10, 10));
-		
-		JLabel lblNewLabel_3 = new JLabel("CHATTY");
-		lblNewLabel_3.setForeground(Color.RED);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNewLabel = new JLabel("NickName : ");
 		contentPane.add(lblNewLabel);
@@ -90,7 +90,30 @@ public class ConnectGui {
 		contentPane.add(connect);
 		
 		frame.setVisible(true);
-		
+		nick_T.addKeyListener(new KeyAdapter() {
+
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					connect.doClick();
+				}
+			}
+		});
+		ip_T.addKeyListener(new KeyAdapter() {
+
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					connect.doClick();
+				}
+			}
+		});
+		port_T.addKeyListener(new KeyAdapter() {
+
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					connect.doClick();
+				}
+			}
+		});
 		connect.addActionListener(e -> {
 			nick = nick_T.getText();
 			ip = ip_T.getText();
@@ -150,7 +173,17 @@ public class ConnectGui {
 			}
 		}
 	}
-	
+	public synchronized void waitFInput() {
+		nick = "";
+		ip = "";
+		port = 0;
+		try {
+			wait();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	public void close() {
 		frame.setVisible(false);
 		frame.dispose();

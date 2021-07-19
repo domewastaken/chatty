@@ -24,7 +24,7 @@ public class Client_app {
 
 		boolean error;
 		
-		ConnectGui cg = new ConnectGui();
+		ConnectGui cg =  new ConnectGui();;
 		
 		do {
 			error = false;
@@ -37,9 +37,10 @@ public class Client_app {
 					
 				print.println("invalid ip address", ContentType.Error);
 				error = true;
-				
+				cg.waitFInput();
 			} 
 		}while(error);
+		
 		buff.add(cg.getNick());
 		cg.close();
 	}

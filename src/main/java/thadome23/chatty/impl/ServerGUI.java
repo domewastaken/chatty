@@ -41,14 +41,14 @@ public class ServerGUI {
 	public ServerGUI(ChatServer c) {
 		
 		server = c;
-		
+		/*
 		try {
 			UIManager.setLookAndFeel(
 			    UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 
-		}
+		}*/
 		initialize();
 	}
 
@@ -59,7 +59,7 @@ public class ServerGUI {
 		frm = new JFrame();
 		frm.setForeground(SystemColor.infoText);
 		frm.setTitle("chatty");
-		frm.setBounds(100, 100, 268, 208);
+		frm.setBounds(100, 100, 332, 241);
 		frm.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] {30, 10, 0, 30, 10};

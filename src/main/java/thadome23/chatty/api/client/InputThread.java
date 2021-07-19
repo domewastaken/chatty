@@ -3,16 +3,21 @@ package thadome23.chatty.api.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
 class InputThread extends Thread {
 	
 	private BufferedReader stream;
 	private boolean test=true;
 	private WindowPrinter output;
-	
-	InputThread(BufferedReader from, WindowPrinter output){
-		this.stream=from;
-		this.output=output;
+	private Socket s;
+
+
+	public InputThread(Socket socket, WindowPrinter userOutput) throws IOException {
+		this.stream=new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		this.output=userOutput;
+		this.s = socket;
 	}
 
 	@Override
@@ -24,12 +29,14 @@ class InputThread extends Thread {
 	
 			try {
 				text = stream.readLine();
+				
 		    } catch (IOException e) {
 				
 		    	if (e.getMessage().equals("Connection reset")){	
 				    close();
-				    output.println("server closed",ContentType.Chat_message);
+				    output.println("server closed",ContentType.Error);
 				}else {e.printStackTrace();}
+		    	e.printStackTrace();
 			}
 			
 		    if (text != null) {
@@ -56,6 +63,10 @@ class InputThread extends Thread {
 		    	}else if(i[0].equals("roomname")) {
 		    		output.println(arg[1],ContentType.Room_name);
 		    	}
+			}else {
+				
+				output.println("Server closed ",ContentType.Error);
+				close();
 			}
 	    }
     }

@@ -34,13 +34,13 @@ public class ClientGui{
 
 	public ClientGui() {
 		// Set System L&F
-			try {
+		/*	try {
 				UIManager.setLookAndFeel(
 				    UIManager.getSystemLookAndFeelClassName());
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 					| UnsupportedLookAndFeelException e) {
 
-			}
+			}*/
 	
 		initialize();
 	}
@@ -53,6 +53,7 @@ public class ClientGui{
 		frame.setBackground(SystemColor.scrollbar);
 		frame.setTitle("Java");
 		frame.setBounds(100, 100, 324, 338);
+		frame.setMinimumSize(new Dimension(324,338));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		pane=(JPanel)frame.getContentPane();
@@ -151,6 +152,9 @@ public class ClientGui{
 		
 		return (String message,ContentType type)-> {
 			
+			frame.toFront();
+			frame.requestFocus();
+			frame.repaint();
 			switch(type) {
 				
 				case Chat_message:
